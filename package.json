@@ -1,0 +1,22 @@
+{
+  "name": "spacex",
+  "version": "0.0.1",
+  "description": "Multiuser interaction",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minmingsheng/spaceX.git"
+  },
+  "author": "Jason Sheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minmingsheng/spaceX/issues"
+  },
+  "homepage": "https://github.com/minmingsheng/spaceX#readme",
+  "devDependencies": {
+    "express": "^4.13.3"
+  }
+}
