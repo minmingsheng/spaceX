@@ -4,7 +4,8 @@
   "description": "Multiuser interaction",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/minmingsheng/spaceX#readme",
   "devDependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "ejs": "2.3.4"
   }
 }
