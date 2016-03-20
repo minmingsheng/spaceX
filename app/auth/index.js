@@ -3,10 +3,7 @@ const config = require('../config')
 const passport =require('passport');
 const db =require('../db');
 const FacebookStrategy = require('passport-facebook').Strategy;
-// ****************************************************************************
-// *                                                                          *
-// *                                 facebook    auth                             *
-// ****************************************************************************
+const TwitterStrategy = require('passport-twitter').Strategy;
 
 
  module.exports = ()=>{
@@ -15,7 +12,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
  	})
 
  	passport.deserializeUser((id, done)=>{
- 		h.findById(id)
+ 		findById(id)
  			.then(user => done(null, user))
  			.catch(error => console.log("Error when deserializing the suer"))
  	})
@@ -23,27 +20,24 @@ const FacebookStrategy = require('passport-facebook').Strategy;
  	passport.use(
  		new FacebookStrategy(config.fb, processAuth)
  	)
+ 	passport.use(
+ 		new TwitterStrategy(config.tw, processAuth)
+ 	)
  }
 
  let processAuth = (accessToken, refreshToken, profile, done)=>{
- 	  	let profileId = profile.id;
- 	  	let profileName = profile.displayName;
- 	  	let profilePic = profile.photos[0].value;
- 	  	console.log("profileId: ", profileId);
- 	  	console.log("profileName: ", profileName);
- 	  	console.log("profilePic: ", profilePic);
- 	  	 return done(null, profile);
- 	  	// find(profileId)
- 	  	// 	.then((result)=>{
- 	  	// 		done(null, result);
- 	  	// 		// if(result){
- 	  	// 		// 	done(null, result);
- 	  	// 		// 	console.log("from: result");
- 	  	// 		// }else{
- 	  	// 		// 	createUser(profileId,profileName,profilePic)
-
- 	  	// 		// }
- 	  	// 	})
+ 	  	find(profile.id)
+ 	  		.then((result)=>{
+ 	  			console.log(result);
+ 	  			if(result){
+ 	  				done(null, result);
+ 	  				console.log("from: result");
+ 	  			}else{
+ 	  				createUser(profile)
+ 	  					.then(newUser=> done(null, newUser))
+ 	  					.catch(err=> console.log("Create new user error"))
+ 	  			}
+ 	  		})
  	  			
 }
 
@@ -57,12 +51,41 @@ let find = (profileId)=>{
 	});
 }
 // console.log("find:",find("492664700944563"));
-let createUser = (profileId,profileName, profilePic)=>{
-	var newUser = new  db.userModel({
-		profileId,
-		profileName, 
-		profilePic
+let createUser = (profile)=>{
+	return new Promise((resolve, reject)=>{
+		let profileId = profile.id;
+		let profileName = profile.displayName;
+		let profilePic = profile.photos[0].value;
+
+		var newUser = new db.userModel({
+			profileId,
+			profileName,
+			profilePic
+		})
+
+		console.log(newUser);
+		newUser.save((err, userModel)=>{
+			if(err){
+				reject(err)
+			}else{
+				resolve(userModel)
+			}
+		})
 	})
-	newUser.save()
 }
-// createUser("112","1231312","adasdsa")
+
+let findById = id=>{
+	console.log(id);
+	return new Promise((resolve, reject)=>{
+		db.userModel.findById(id, (error,  user)=>{
+			// console.log("from h- findById: ", user);
+			if(error){
+				reject(error);
+				console.log(error);
+			}else{
+				resolve(user);
+				console.log(user);
+			}
+		})
+	});
+}

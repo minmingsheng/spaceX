@@ -5,42 +5,41 @@
 var LoginForm = React.createClass({
   render: function() {
     return (
-      <div>
-        <form action="">
-          <input type="text" id="username"/>
-          <input type="text" id="password"/>
-          <button>ok</button>
-        </form>
-        <a href="/auth/facebook"><button>facebook</button></a>
-        <a href=""><button>twitter</button></a>
+      <div className="login-form">
+        <h1>SPACE-X</h1>
+        <FacebookBtn />
+        <TwiiterBtn />
       </div>
     );
   }
 });
+
+var FacebookBtn = React.createClass({
+  render: function(){
+    return(
+      <a href="/auth/facebook"><button className="facebookBtn">facebook</button></a>
+    )
+  }
+})
+
+var TwiiterBtn = React.createClass({
+  render: function(){
+    return(
+      <a href="/auth/twitter"><button className="twitterBtn">twitter</button></a>
+    )
+  }
+})
 
 var LoginSys = React.createClass({
   render:function(){
     return(
       <div>
         <LoginForm/>
-        <Register/>
       </div>
     )
   }
 })
-var Register = React.createClass({
-  render:function(){
-    return(
-      <div>
-        <form action="">
-          <input type="text" id="newUsername"/>
-          <input type="text" id="newPassword"/>
-          <button>register</button>
-        </form>
-      </div>
-    )
-  }
-})
+
 ReactDOM.render(
   <LoginSys />,
   document.getElementById('loginMain')

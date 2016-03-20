@@ -23,6 +23,10 @@
     "express-session": "1.12.1",
     "passport": "0.3.2",
     "passport-facebook": "2.0.0",
-    "passport-twitter": "1.0.3"
+    "passport-twitter": "1.0.3",
+    "connect-mongo": "0.8.2"
+  },
+  "dependencies": {
+    "passport-google-oauth": "^1.0.0"
   }
 }

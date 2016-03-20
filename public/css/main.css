@@ -54,6 +54,212 @@ table {
 ****************************************************************************
 */
 body h1 {
-  color: red; }
+  font-size: 2em; }
+body h2 {
+  font-size: 1.5em; }
+body h3 {
+  font-size: 1.17em; }
+body h4 {
+  font-size: 1.12em; }
+body h5 {
+  font-size: .83em; }
+body h6 {
+  font-size: .75em; }
+body a {
+  text-decoration: none; }
+
+#loginbd {
+  background: url(../img/bg.jpg) no-repeat;
+  background-attachment: fixed; }
+  #loginbd .login-form {
+    display: block;
+    margin: 300px auto;
+    text-align: center;
+    box-sizing: content-box
+    /*background: red;*/ }
+    #loginbd .login-form h1 {
+      color: white; }
+    #loginbd .login-form button {
+      display: block;
+      border: none;
+      width: 340px;
+      height: 40px;
+      margin: auto;
+      border-radius: 5px;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      font-size: 0.8em;
+      -webkit-transition: all 200ms ease;
+              transition: all 200ms ease; }
+      #loginbd .login-form button:hover {
+        box-shadow: 1px 1px 11px #00e4d9; }
+    #loginbd .login-form .facebookBtn {
+      background: #3b5998; }
+    #loginbd .login-form .twitterBtn {
+      background: #4099FF; }
+
+#roomList {
+  background: url(../img/bg.jpg) no-repeat;
+  background-size: cover;
+  background-size: 200%; }
+  #roomList .parent-of-rl-ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  #roomList .userList {
+    margin-left: 3em;
+    width: 300px;
+    background: #ededed; }
+    #roomList .userList .users {
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      background: #101112; }
+      #roomList .userList .users .user {
+        border-top: 3px solid #00cec4;
+        height: 70px;
+        width: 80%;
+        background: #438ac8;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin: auto;
+        margin-top: 1em;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        padding-left: 0.5em; }
+        #roomList .userList .users .user img {
+          border-radius: 50%;
+          width: 70px;
+          display: inline; }
+        #roomList .userList .users .user p {
+          text-align: center;
+          width: 100%;
+          line-height: 70px; }
+  #roomList .roomList {
+    width: 80%;
+    background: #fff;
+    color: #000; }
+    #roomList .roomList .rooms {
+      width: 100%;
+      height: 50%;
+      overflow: scroll;
+      background: #e1e1e1;
+      color: black;
+      cursor: pointer; }
+      #roomList .roomList .rooms .addroom {
+        font-size: 2em; }
+      #roomList .roomList .rooms .room {
+        line-height: 50px;
+        width: 20%;
+        height: 20%;
+        background: #445366;
+        float: left; }
+      #roomList .roomList .rooms .room:nth-child(2n) {
+        background: rgba(134, 199, 151, 0.4); }
+    #roomList .roomList .dalogs {
+      width: 100%;
+      height: 50%;
+      overflow: scroll;
+      background: black;
+      position: relative;
+      overflow: hidden;
+      color: white; }
+      #roomList .roomList .dalogs .dialogInput {
+        position: absolute;
+        bottom: 1em;
+        height: 40px;
+        width: 100%;
+        background: red;
+        text-align: left;
+        box-sizing: content-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; }
+        #roomList .roomList .dalogs .dialogInput input {
+          width: 80%;
+          height: 97%;
+          padding-left: 2em;
+          border: none;
+          -webkit-box-flex: 9;
+          -webkit-flex: 9;
+              -ms-flex: 9;
+                  flex: 9;
+          outline: none;
+          color: white;
+          background: #445366; }
+        #roomList .roomList .dalogs .dialogInput div {
+          width: 17%;
+          height: 100%;
+          display: block;
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+              -ms-flex: 1;
+                  flex: 1;
+          text-align: center;
+          -webkit-align-self: center;
+              -ms-flex-item-align: center;
+                  align-self: center;
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          line-height: 35px;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          -webkit-flex-direction: column;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+          -webkit-box-align: center;
+          -webkit-align-items: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          background: #438ac8; }
+      #roomList .roomList .dalogs .dialogfeed {
+        width: 100%;
+        height: 80%;
+        background: rgba(205, 254, 254, 0.7);
+        overflow: scroll; }
+        #roomList .roomList .dalogs .dialogfeed .dalog {
+          display: -webkit-box;
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: justify;
+          -webkit-justify-content: space-between;
+              -ms-flex-pack: justify;
+                  justify-content: space-between;
+          margin: 1em; }
+          #roomList .roomList .dalogs .dialogfeed .dalog div:first-child {
+            width: 2em;
+            margin-right: 0.5em; }
+            #roomList .roomList .dalogs .dialogfeed .dalog div:first-child img {
+              width: 2em;
+              height: 100%; }
+          #roomList .roomList .dalogs .dialogfeed .dalog div:nth-child(2) {
+            width: 70%;
+            color: black;
+            text-align: left; }
+          #roomList .roomList .dalogs .dialogfeed .dalog div:nth-child(3) {
+            color: black;
+            text-align: right;
+            padding-right: 1em; }
+          #roomList .roomList .dalogs .dialogfeed .dalog div {
+            width: 100px;
+            height: 2em;
+            line-height: 2em; }
+        #roomList .roomList .dalogs .dialogfeed .dalog:nth-child(n) {
+          background: rgba(225, 225, 225, 0.5); }
+        #roomList .roomList .dalogs .dialogfeed .dalog:nth-child(2n) {
+          background: rgba(225, 225, 225, 0.2); }
+  #roomList .userList, #roomList .roomList {
+    height: 90vh;
+    overflow: hidden;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center; }
 
 /*# sourceMappingURL=main.css.map */
