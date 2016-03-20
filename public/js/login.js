@@ -11,7 +11,7 @@ var LoginForm = React.createClass({
           <input type="text" id="password"/>
           <button>ok</button>
         </form>
-        <a href=""><button>facebook</button></a>
+        <a href="/auth/facebook"><button>facebook</button></a>
         <a href=""><button>twitter</button></a>
       </div>
     );

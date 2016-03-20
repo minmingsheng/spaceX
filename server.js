@@ -1,11 +1,39 @@
 'use strict';
+const port = 1990;
 const express = require('express');
 const app = express();
-const spaceApp = require('./app') 
-// const router = require('express').Router();
-const port = 1990;
+const spaceApp = require('./app');
 
-console.log(spaceApp);
+
+
+// ****************************************************************************
+// *                                                                          *
+// *                                 database                                 *
+// ****************************************************************************
+
+
+
+
+
+
+// let newChatUser = new require('./app/db').userModel({
+// 				profileId: "1213123",
+// 				profileName: "jason",
+// 				profilePic: "nasdadaasd"
+// 			})
+
+// newChatUser.save((err, userModel)=>{
+// 	if(err) return console.log(err)
+// 	console.error(userModel);
+// })
+
+// userModel.findOne({profileId:"123134"}, (err, kk)=>{
+// 	if(kk){
+// 		console.log("exist");
+// 	}else{
+// 		console.log("no yet");
+// 	}
+// })
 
 
 
