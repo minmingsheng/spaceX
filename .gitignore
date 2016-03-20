@@ -1,3 +1,4 @@
 # Dependency directories
-node_modules;
-app/config
+node_modules
+# Dev.json
+app/config/development.json
