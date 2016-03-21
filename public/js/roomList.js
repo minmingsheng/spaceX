@@ -41,44 +41,61 @@ var RoomList = React.createClass({
   }
 });
         var Rooms = React.createClass({
+          getInitialState: function() {
+             return {add: false};
+           },
           createRoom : function(e){
-            
+             this.setState({add: true});
           },
+
+          /*!!!!!!!socket!!!!!!*/
+          finishCreateRoom : function(e){
+            var data = e.currentTarget.parentElement.querySelector("input").value;
+              if(data !== ""){
+                socket.emit("createRoom", data);
+              }
+             this.setState({add: false})
+          },
+          /*!!!!!!!socket!!!!!!*/
           render: function() {
+            var add = this.state.add? <div className="pop-up-creat">
+              <input type='text' placeholder='enter the room name' />
+              <button onClick = {this.finishCreateRoom} id="createRoombtn">create</button>
+            </div> :  <h1></h1>
             return (
               <div className="rooms">
+                  {add}
                   <div className="room addroom" onClick={this.createRoom}>
                       +
                   </div>
-                  <div className="room">
-                       Room name
-                  </div>
-                  <div className="room">
-                        Jasn
-                  </div>
-                  <div className="room">
-                       panns
-                  </div>
-                  <div className="room">
-                        paney
-                  </div>
-                  <div className="room">
-                       fuck
-                  </div>
-                  <div className="room">
-                      shit
-                  </div>
+                 {/* <a className="room"><div >
+                                                                           Room name
+                                                                      </div></a>
+                                                    <a className="room"><div >
+                                                                            Jasn
+                                                                      </div></a>
+                                                    <a className="room"><div >
+                                                                           panns
+                                                                      </div></a>
+                                                   <a className="room"> <div >
+                                                                           paney
+                                                                     </div></a>
+                                                    <a className="room"><div >
+                                                                           fuck
+                                                                      </div></a>
+                                                    <a  className="room"><div>
+                                                                          shit
+                                                                      </div></a>*/}
               </div>
             );
           }
         });
 
-
         var Dialogs = React.createClass({
           render: function() {
             return (
               <div className="dalogs">
-                dalogs
+                dialogs
                 <DialogFeed/>
                 <DialogInput/>
               </div>
@@ -89,13 +106,13 @@ var RoomList = React.createClass({
                   render: function() {
                     return (
                       <div className="dialogfeed">
-                        <Dalog/>
-                        <Dalog/>
-                        <Dalog/>
-                        <Dalog/>
-                        <Dalog/>
-                        <Dalog/>
-                        <Dalog/>
+                       {/* <Dalog/>
+                                               <Dalog/>
+                                               <Dalog/>
+                                               <Dalog/>
+                                               <Dalog/>
+                                               <Dalog/>
+                                               <Dalog/>*/}
                       </div>
                     );
                   }
@@ -113,11 +130,12 @@ var RoomList = React.createClass({
                 });
                 
                 var DialogInput = React.createClass({
+
                   render: function() {
                     return (
                       <div className="dialogInput">
                       
-                        <input></input>
+                        <input type="text" id="listDialogInput" placeholder="type word here.." />
                         <div>Send</div>
                       </div>
                     );
@@ -141,20 +159,8 @@ var UserList = React.createClass({
         var Users = React.createClass({
           render:function(){
             return(
-              <div className="users">
-                user
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
-                <User/>
+              <div className="users" id="users">
+
               </div>
             )
           }

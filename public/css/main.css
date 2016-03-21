@@ -66,7 +66,8 @@ body h5 {
 body h6 {
   font-size: .75em; }
 body a {
-  text-decoration: none; }
+  text-decoration: none;
+  color: black; }
 
 #loginbd {
   background: url(../img/bg.jpg) no-repeat;
@@ -94,9 +95,11 @@ body a {
       #loginbd .login-form button:hover {
         box-shadow: 1px 1px 11px #00e4d9; }
     #loginbd .login-form .facebookBtn {
-      background: #3b5998; }
+      background: #3b5998;
+      outline: none; }
     #loginbd .login-form .twitterBtn {
-      background: #4099FF; }
+      background: #4099FF;
+      outline: none; }
 
 #roomList {
   background: url(../img/bg.jpg) no-repeat;
@@ -127,12 +130,14 @@ body a {
         display: flex;
         margin: auto;
         margin-top: 1em;
-        padding-top: 1em;
-        padding-bottom: 1em;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
         padding-left: 0.5em; }
         #roomList .userList .users .user img {
-          border-radius: 50%;
+          /*border-radius: 50%;*/
+          border-radius: 10px;
           width: 70px;
+          height: 70px;
           display: inline; }
         #roomList .userList .users .user p {
           text-align: center;
@@ -150,13 +155,32 @@ body a {
       color: black;
       cursor: pointer; }
       #roomList .roomList .rooms .addroom {
-        font-size: 2em; }
+        font-size: 2em;
+        opacity: 0.5; }
+        #roomList .roomList .rooms .addroom:hover {
+          opacity: 1; }
+      #roomList .roomList .rooms .pop-up-creat {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex; }
+        #roomList .roomList .rooms .pop-up-creat input {
+          width: 80%;
+          height: 40px;
+          padding-left: 1em;
+          outline-color: #cedcd2; }
+        #roomList .roomList .rooms .pop-up-creat button {
+          width: 20%; }
       #roomList .roomList .rooms .room {
+        -webkit-transition: all 300ms ease;
+                transition: all 300ms ease;
         line-height: 50px;
         width: 20%;
         height: 20%;
         background: #445366;
-        float: left; }
+        float: left;
+        -webkit-animation: showup 700ms 1 ease;
+                animation: showup 700ms 1 ease; }
       #roomList .roomList .rooms .room:nth-child(2n) {
         background: rgba(134, 199, 151, 0.4); }
     #roomList .roomList .dalogs {
@@ -188,7 +212,7 @@ body a {
           -webkit-flex: 9;
               -ms-flex: 9;
                   flex: 9;
-          outline: none;
+          /*outline: none;*/
           color: white;
           background: #445366; }
         #roomList .roomList .dalogs .dialogInput div {
@@ -261,5 +285,10 @@ body a {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     text-align: center; }
+
+/*****************************************************************************
+*                                 animation                                *
+****************************************************************************
+*/
 
 /*# sourceMappingURL=main.css.map */

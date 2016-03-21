@@ -24,9 +24,8 @@
     "passport": "0.3.2",
     "passport-facebook": "2.0.0",
     "passport-twitter": "1.0.3",
-    "connect-mongo": "0.8.2"
-  },
-  "dependencies": {
-    "passport-google-oauth": "^1.0.0"
+    "connect-mongo": "0.8.2",
+    "mongoose": "4.3.1",
+    "socket.io": "1.4.4"
   }
 }

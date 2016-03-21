@@ -63,7 +63,7 @@ let createUser = (profile)=>{
 			profilePic
 		})
 
-		console.log(newUser);
+		console.log("newUser:", newUser);
 		newUser.save((err, userModel)=>{
 			if(err){
 				reject(err)

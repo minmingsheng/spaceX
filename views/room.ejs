@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Room</title>
-		<link rel="stylesheet" href="css/main.css">
-		 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+		<title><%= roomName%></title>
+		<link rel="stylesheet" href="../css/main.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 	</head>
-	<body>
+	<script type="text/javascript" >
+		"use strict";
+		let socket = io("<%= host %>"+"/roomList");
+		socket.on('connect', function () {
+		   console.log("connect to server")
+		 });
+	window.addEventListener("load", function(){
+		var roomId = "<%= roomId%>";
+		var roomName = "<%= roomName%>";
+		var userPic = "<%= user.profilePic%>";
+		var userName = "<%= user.profileName%>";
+		var userId = "<%= user.profileId%>";
+		
+		console.log(roomId);
+		console.log(roomName);
+		console.log(userPic);
+		console.log(userName);
+		console.log(userId);
+		
+	})
+		
+
+
+
+	</script>
+	<body id="roomList">
 		<header>
 			<nav>
-				<h1>Room</h1>
+				<h1>Room  <%= roomName%> | <%= roomId%></h1>
 			</nav>
 		</header>
 		<main id="roomMain">
@@ -19,10 +45,10 @@
 	<!-- 	<script type="text/javascript" src="js/login.js">
 
 		</script> -->
-		<script type="text/babel" src="js/room.js"></script>
-		<script type="text/babel" src="js/controller.js"></script>
-		<script type="text/babel" >
+		<script type="text/babel" src="../js/room.js"></script>
+		<script type="text/babel" src="../js/controller.js"></script>
 
-		</script>
+		<!-- controller -->
+
 	</body>
 </html>

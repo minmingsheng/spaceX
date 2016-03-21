@@ -3,14 +3,143 @@
 	<head>
 		<title>rooms from ejs</title>
 		<link rel="stylesheet" href="css/main.css">
-		 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 	</head>
+	<script type="text/babel" src="js/roomList.js"></script>
+
+	<script type="text/javascript" >
+		"use strict";
+		let socket = io("<%=host%>"+"/roomList");
+		socket.on('connect', function () {
+		   console.log("connect to server")
+		 });
+	window.addEventListener("load", function(){
+		let userName = "<%= user.profileName %>";
+		let userPic = document.getElementById('ppppcccc').textContent;
+		let userId = "<%=user.profileId%>";
+		// let name = "<%=user.profileName%>"
+		console.log("userName: ", userName);
+		console.log("userPic: "+ userPic);
+		console.log("userId: ", userId);
+		let renderChatRooms = room=>{
+			console.log("room:", room);
+			let rooms = document.querySelector(".rooms");
+			let newrooms = document.querySelectorAll(".room:not(.addroom)")
+			console.log("newrooms: ", newrooms);
+			for (var i = 0; i < newrooms.length; i++) {
+				newrooms[i].remove();
+			};
+			// let roomsStr = '';
+			for(let r of room){
+				// roomsStr += `<a class="room" href='room/${r.roomId}'></a>`;
+				var newRoom = document.createElement("a");
+				newRoom.classList.add("room");
+				newRoom.setAttribute("href", `room/${r.roomId}`)
+				newRoom.innerHTML = `<div >${r.room}</div>`
+				// console.log(roomsStr);
+				rooms.appendChild(newRoom);
+			}
+			
+		}; 
+		/*ask for roomList*/
+		socket.emit("getAllRooms");
+		/*get  roomlsit*/
+		socket.on("sendAllRooms", (data)=>{
+			renderChatRooms(JSON.parse(data));
+		});
+		/*the same name of creating room */
+		socket.on("theSame", (data)=>{
+			alert(data)
+		});
+		/*send current page user profile*/
+		socket.emit("join", {
+			userName,
+			userPic,
+			userId
+		})	
+
+		socket.on("getRoomListUsersNum", (getRoomListUsersNum)=>{
+			console.log("getRoomListUsersNum", getRoomListUsersNum);
+		})
+		/*get the whole user list*/
+		socket.on("updateUserList", (data)=>{
+			renderUsers(data);
+		});
+		
+		let renderUsers = data=>{
+			let users = document.getElementById('users');
+			users.innerHTML ="";
+
+			let profiles = JSON.parse(data);
+			console.log("new data: ", profiles);
+
+			for (var i = 0; i < profiles.length; i++) {
+				let luserName = profiles[i].luserName;
+				let luserPic = profiles[i].luserPic.toString();
+				let newUser = document.createElement("div");
+				newUser.classList.add('user')
+				let newImg = document.createElement("img");
+				let p = document.createElement("p");
+				p.textContent = luserName
+				newImg.setAttribute("src", luserPic);
+				newUser.appendChild(newImg);
+				newUser.appendChild(p);
+				users.appendChild(newUser)
+
+			};
+		}
+
+		let createWord = ()=>{
+			let listDialogInput = document.getElementById("listDialogInput");
+			listDialogInput.addEventListener("keyup", (e)=>{
+				if(e.keyCode ==13){
+					socket.emit("sendMessage", {
+						message: listDialogInput.value,
+						userName,
+						userPic,
+					})
+					listDialogInput.value="";
+				}
+			})
+		}
+		setTimeout(createWord, 2000);
+		socket.on("broadcastSms", (data)=>{
+			let info = JSON.parse(data)
+			console.log(info);
+			renderSms(info);
+		})
+		let renderSms = (info)=>{
+			var currentTime = new Date();
+			var time = currentTime.getHours(); 
+		    time += " : "; 
+		    time += currentTime.getMinutes(); 
+		    time += " : "; 
+		    time +=currentTime.getSeconds().length==1? 0+currentTime.getSeconds() : currentTime.getSeconds(); 
+
+			let dialogfeed = document.querySelector('.dialogfeed');
+			dialogfeed.scrollTop = dialogfeed.scrollHeight;
+			let newSms = document.createElement("div")
+			newSms.classList.add("dalog");
+			newSms.innerHTML = `<div><img src="${info.userPic}"/></div>
+									<div>${info.message}</div>
+ 									<div>${time}</div>`
+ 			dialogfeed.appendChild(newSms)
+		}
+
+	})
+		
+
+
+
+	</script>
 	<body id="roomList">
 		<header>
 			<nav>
-				<h1>RoomList</h1>
+				<h1>Room</h1>
+				<h1 id="ppppcccc"style="display: none"><%= user.profilePic %></h1>
 			</nav>
 		</header>
 		<main id="roomMain">
@@ -19,12 +148,9 @@
 	<!-- 	<script type="text/javascript" src="js/login.js">
 
 		</script> -->
-		<script type="text/babel" src="js/roomList.js"></script>
 		<script type="text/babel" src="js/controller.js"></script>
 
 		<!-- controller -->
-		<script type="text/babel" >
 
-		</script>
 	</body>
 </html>

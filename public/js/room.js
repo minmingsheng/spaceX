@@ -21,6 +21,16 @@ var Logout = React.createClass({
     return (
       <div>
         <a href="/"><button>logout</button></a>
+        <BackToRoomList/>
+      </div>
+    );
+  }
+});
+var BackToRoomList = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <a href="/roomList"><button>roomList</button></a>
       </div>
     );
   }

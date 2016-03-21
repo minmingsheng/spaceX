@@ -10,8 +10,13 @@ const passport = require('passport')
 app.use(express.static("public"))
 
 
+
 // ****************************************************************************
-// *                                  session                                 *
+                                  /*socket*/
+
+
+
+
 // ****************************************************************************
 
 
@@ -26,6 +31,6 @@ app.use("/", passport.session());
 
 
 app.use("/", spaceApp.router);
-app.listen(process.env.PORT || port, ()=>{
+spaceApp.ioServer(app).listen(process.env.PORT || port, ()=>{
 	console.log(`PORT: ${port}`);
 })
