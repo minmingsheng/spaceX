@@ -58,7 +58,9 @@ table {
 
 body{
 
-	
+	background: url(../img/bg.jpg) no-repeat;
+	background-size: cover;
+	background-size: 200%;
 	h1 { font-size: 2em; }
 	h2 { font-size: 1.5em; }
 	h3 { font-size: 1.17em; }
@@ -117,9 +119,7 @@ body{
 }
 
 #roomList{
-	background: url(../img/bg.jpg) no-repeat;
-	background-size: cover;
-	background-size: 200%;
+
 
 	.parent-of-rl-ul{
 		display: flex;
@@ -212,7 +212,8 @@ body{
 			overflow: scroll;
 			background: rgba(0, 0, 0, 1);
 			position: relative; 
-			overflow: hidden;
+			display: flex;
+			flex-direction: column;
 			color: white;
 			.dialogInput{
 				position: absolute;
@@ -303,8 +304,146 @@ body{
 
 }
 
+/*****************************************************************************
+*                                 cahtroom                                 *
+****************************************************************************
+a*/
+#room{
+	height: 100%;
+	height: 100%;
+	#roomMain{
+		width: 100%;
+		height: 100%;
+		.play-room{
+			width: 100%;
+			height: 90vh;
+			display: flex;
+			/*background: green;*/
+			flex-direction: row;
+			justify-content: space-between;
+			.play-userList{
+				border-top-left-radius: 10px;
+				width: 20%;
+				background: transparent;
+				text-align: center;
+				overflow: scroll;
+				.play-user{
+					.user{
+						margin-top: 1em;
+						img{
+							width: 50%;
+						}
+						p{
+							background: rgba(225,225,225,0.3);
+							width: 50%;
+							margin: auto;
+						}
+					}
+				}
+			}
+			.play-chat{
+				border-top-right-radius: 10px;
+				width: 78%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				.play-chat-feed{
+					height: 90%;
+					overflow: scroll;
+					.dalog{
+						display: flex;
+						justify-content: space-between;
+						margin: 1em;
+						background: rgba(225,225,225,0.4);
+						div:first-child{
+							width: 2em;
+							margin-right: 0.5em;
+							img{
+								width: 2em;
+								height: 100%;
+							}
+						};
+						div:nth-child(2){
+							width: 70%;
+							color:black;
+							text-align: left;
+							
+						};
+						div:nth-child(3){
+							color:black;
+							text-align: right;
+							padding-right: 1em;
+						};
+						div{
+							width: 100px;
+							height: 2em;
+							line-height: 2em;
+							
+						}
+					}
+				}
+				.play-input{
+					height: 8%;
+					/*background: blue;*/
+					display: flex;
+					flex-direction: row;
+					div{
+						text-align: center;
+						align-self: center;
+						color:  rgba(225,225,225,0.5);
+						background: rgba(225, 225, 225, 0.1);
+						border-left: 1px solid rgba(225,225,225,0.5);
+						transition: all 500ms ease;
+						line-height: 50px;
+						&:hover{
+							background: rgba(225,225,225,0.5);
+						};
+					}
+					input{
+						width: 80%;
+						height: 97%;
+						padding-left: 2em;
+						border:none;
+						flex: 9;
+						color: rgba(255, 255, 255, 1);
+						outline-color: rgba(2, 13, 43, 1);
+						background: rgba(225, 225, 225, 0.1);
+					}
+					.send{
+						width: 10%;
+						height: 100%;
+	
+					}
+					.pic{
+						width: 10%;
+						height: 100%;
+					}
+				}	
+			}
+			.play-userList,.play-chat{
+				height: 100%;
+				box-shadow: 1px 1px 11px rgba(0,0,0,1);
+			}
+		}
+	}
+}
 
 /*****************************************************************************
 *                                 animation                                *
 ****************************************************************************
 */
+.dot{
+	width: 2px;
+	height: 2px;
+	border-radius: 50%;
+	background: rgba(9, 190, 189, 1);
+	position: absolute;
+
+	animation: dot 1s alternate infinite;
+}
+@keyframes dot{
+	to{
+		opacity: 0;
+		transform: scale(4);
+	}
+}

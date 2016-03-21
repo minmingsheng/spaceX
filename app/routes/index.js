@@ -8,7 +8,9 @@ module.exports = ()=>{
 	let routes = {
 		"get":{
 			'/': (req, res, next)=>{
-				res.render("login")
+				res.render("login",{
+					host: config.host
+				})
 			},
 			"/roomList":[isAuthenticated,(req, res, next)=>{
 				console.log("req.user!!!!:", req.user);

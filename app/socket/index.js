@@ -2,8 +2,9 @@
 const crypto = require('crypto');
 module.exports = (io, app)=>{
 		let	allrooms = app.locals.chatrooms;
-		let roomListusers =app.locals.roomListusers;
-
+		let roomListusers = app.locals.roomListusers;
+		let sid = app.locals.sid;
+		let posObj = app.locals.posObj;
 
 		console.log("allrooms: ", app.locals);
 		io.of('/roomList').on('connection', socket=>{
@@ -63,6 +64,77 @@ module.exports = (io, app)=>{
 			});
 
 		})/*of('/roomList')*/
+		io.of('/room').on('connection', socket=>{
+			console.log("successfully connect with playroom");
+			socket.on("join", (data)=>{
+				let addUsertoPlayRoom = (allrooms, socket, data)=>{
+					let getroom = getRoom(allrooms, data.roomId);
+					let exist;
+					if(getroom){
+						for (var i = 0; i < getroom.users.length; i++) {
+							if(getroom.users[i].userId === data.userId){
+								exist = true;
+							}
+						};
+						if(!exist){
+							getroom.users.push({
+								socketId: socket.id,
+								userPic: data.userPic,
+								userName: data.userName,
+								userId: data.userId,
+							})
+						}
+
+					}
+					socket.join(data.roomId);
+					console.log("getRoom(allrooms, data.roomId): ", getroom);
+					return getroom
+				}
+				let PlayroomUserList = addUsertoPlayRoom(allrooms, socket, data).users;
+				console.log("PlayroomUserList: ", PlayroomUserList);
+
+				socket.broadcast.to(data.roomId).emit("PlayroomUserList", JSON.stringify(PlayroomUserList));
+				socket.emit("PlayroomUserList", JSON.stringify(PlayroomUserList));
+			})
+		});
+
+		io.of('/login').on('connection', socket=>{
+			console.log("successfully connect with login");
+			posObj = {
+				socketId: "",
+				pos: {
+						x: "",
+						y: ""
+					}
+			}
+			socket.on("mousemove", (data)=>{
+				posObj.socketId = socket.id;
+				posObj.pos.x =data.x;
+				posObj.pos.y =data.y; 
+				socket.broadcast.emit("mousePos", {
+					x: data.x,
+					y: data.y,
+				})
+			})
+
+			socket.on("disconnect", ()=>{
+				let a = sid.indexOf(socket.id);
+				sid.splice(a,1)
+				console.log(sid);
+				socket.broadcast.emit("countOdId", sid.length);
+				socket.emit("countOdId", sid.length);
+
+			});
+			socket.on("join", ()=>{
+				console.log("joining");
+				findSid(sid,socket);
+				socket.emit("countOdId", sid.length);
+				socket.broadcast.emit("countOdId", sid.length);
+				socket.emit("countOdId", sid.length);
+			});
+			
+		});
+
 }
 
 
@@ -120,4 +192,26 @@ let spliceLeaveUser=(socket, roomListusers)=>{
 		console.log("after splice roomListusers", roomListusers);
 	}
 
+}
+
+let findSid = (sid,socket)=>{
+
+	if(sid.indexOf(socket.id)===-1){
+		sid.push(socket.id)
+	}else{
+		return
+	};
+		console.log(sid);
+	console.log(socket.id);
+	
+}
+
+let getRoom = (allrooms, roomId)=>{
+	return allrooms.find((el, index, array)=>{
+		if(el.roomId === roomId){
+			return true
+		}else{
+			return false
+		}
+	})
 }

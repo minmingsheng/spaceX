@@ -3,6 +3,8 @@ require('./auth')();
 let ioServer = app=> { 
 	app.locals.chatrooms = [];
 	app.locals.roomListusers=[];
+	app.locals.sid = [];
+	app.locals.posObj = [];
 	
 	const server = require("http").Server(app);
 	

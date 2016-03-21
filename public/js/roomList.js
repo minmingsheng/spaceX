@@ -95,7 +95,7 @@ var RoomList = React.createClass({
           render: function() {
             return (
               <div className="dalogs">
-                dialogs
+                Dialog
                 <DialogFeed/>
                 <DialogInput/>
               </div>

@@ -6,7 +6,41 @@
 		 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 	</head>
+	<script type="text/javascript" >
+		'use strict';
+		let socket = io("<%= host %>"+"/login");
+		let dotNum;
+		socket.on('connect', function () {
+		  	// console.log("connect to server")
+		  	
+		 });
+		socket.emit("join");
+		window.addEventListener("mousemove", (e)=>{
+			socket.emit("mousemove", {
+				x: e.clientX || e.pageX,
+				y: e.clientY || e.pageY
+			})
+		
+			socket.on("mousePos",(pos)=>{
+				// dot.style.top = pos.y+"px";
+				// dot.style.left = pos.x+"px";
+			})
+			socket.on("countOdId",(data)=>{
+				console.log(data)
+				for (var i = 0; i <data; i++) {
+					var dot = document.createElement("div");
+					dot.setAttribute("class", "dot");
+					document.body.appendChild(dot);
+					dot.style.top = 2*Math.floor(Math.random()*window.innerWidth)+"px";
+					dot.style.left = 2*Math.floor(Math.random()*window.innerHeight)+"px";
+				};
+
+			})
+
+		})
+	</script>
 	<body id="loginbd">
 		
 		<main id="loginMain">
