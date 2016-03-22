@@ -17,7 +17,7 @@
     "url": "https://github.com/minmingsheng/spaceX/issues"
   },
   "homepage": "https://github.com/minmingsheng/spaceX#readme",
-  "devDependencies": {
+  "dependencies": {
     "express": "^4.13.3",
     "ejs": "2.3.4",
     "express-session": "1.12.1",
