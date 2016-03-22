@@ -8,7 +8,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 	</head>
-	<script type="text/babel" src="../js/room.js"></script>
 
 	<script type="text/javascript" >
 		"use strict";
@@ -38,24 +37,8 @@
 			})
 
 		 });
-		// let go= ()=>{
-		// 	var playUser = document.querySelector(".play-user");
-		// 	console.log(playUser);
-		// 	socket.on("PlayroomUserList", (data)=>{
-		// 		console.log("!!!!!userlistdata: ", JSON.parse(data));
-		// 		let userlist  = JSON.parse(data);
-		// 		playUser.innerHTML = "";
-		// 		for (var i = 0; i < userlist.length; i++) {
-		// 			console.log("userlist[i]: ",userlist[i]);
-		// 			var newUser = document.createElement("div");
-		// 			newUser.classList.add("user");
-		// 			newUser.innerHTML = `<img/ src="${userlist[i].userPic}"><p>${userlist[i].userName}</p>`
-		// 			playUser.appendChild(newUser);
 
-		// 		};
-		// 	})
-		// }
-		// setTimeout(go, 1000);
+
 	})
 		
 
@@ -63,10 +46,16 @@
 
 	</script>
 	<body id="room">
-		<p id="pppccc"><%= user.profilePic%></p>
+		<p id="pppccc" style="display: none"><%= user.profilePic%></p>
+		<p id="roomId" style="display: none"><%= roomId%></p>
+		<p id="profileName" style="display: none"><%= user.profileName%></p>
+		<p id="profileId" style="display: none"><%= user.profileId%></p>
 		<header>
 			<nav>
-				<h1>Room  <%= roomName%> | <%= roomId%></h1>
+				<div>
+					<h1><a href="/roomList">Room</a> | <%= roomName%> </h1>
+					<a href="/room/<%= roomId%>?play=true">play</a>
+				</div>
 			</nav>
 		</header>
 		<main id="roomMain">
@@ -76,6 +65,8 @@
 	<!-- 	<script type="text/javascript" src="js/login.js">
 
 		</script> -->
+		<script type="text/babel" src="../js/room.js"></script>
+
 		<script type="text/babel" src="../js/controller.js"></script>
 
 		<!-- controller -->

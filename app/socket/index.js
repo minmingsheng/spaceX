@@ -78,11 +78,13 @@ module.exports = (io, app)=>{
 						};
 						if(!exist){
 							getroom.users.push({
+								roomId: data.roomId,
 								socketId: socket.id,
 								userPic: data.userPic,
 								userName: data.userName,
 								userId: data.userId,
 							})
+							getroom.socketId = socket.id;
 						}
 
 					}
@@ -95,6 +97,57 @@ module.exports = (io, app)=>{
 
 				socket.broadcast.to(data.roomId).emit("PlayroomUserList", JSON.stringify(PlayroomUserList));
 				socket.emit("PlayroomUserList", JSON.stringify(PlayroomUserList));
+			})
+
+			socket.on("sendPlaySms", (data)=>{
+				console.log(data);
+				socket.broadcast.to(data.roomId).emit("newSMS", data);
+				socket.emit("newSMS", data);
+			});
+
+			socket.on("shake", (data)=>{
+				console.log(data);
+				socket.broadcast.to(data.roomId).emit("shakePermission", data);
+				socket.emit("shakePermission", data);
+			})
+
+			socket.on("disconnect", ()=>{
+				console.log("1 user disconnect from room");
+				let removeUserFromRoom =  (allrooms, socket)=>{
+					let getRoom = (allrooms, roomId)=>{
+						return allrooms.find((el, index, array)=>{
+							if(el.socketId === roomId){
+								return true
+							}else{
+								return false
+							}
+						})
+					}
+					let room = getRoom(allrooms, socket.id);
+					console.log("when leave:", room);
+					if(room){
+						let t;
+						for (var i = 0; i < room.users.length; i++) {
+							if(room.users[i].socketId == socket.id){
+								t = i;
+							}
+						};
+						if(t != undefined){
+							socket.leave(room.roomID);
+							room.users.splice(t,1)
+						}
+						console.log("when leave t : ", room.users);
+						socket.broadcast.to(room.roomId).emit("PlayroomUserList", JSON.stringify(room.users));
+						socket.to(room.roomId).emit("PlayroomUserList", JSON.stringify(room.users));
+						socket.emit("PlayroomUserList", JSON.stringify(room.users));
+					}
+
+				}
+					// // let num = findUser(room, socket);
+					// console.log("when liear num: ", num);
+				removeUserFromRoom(allrooms, socket)
+	
+ 	
 			})
 		});
 
@@ -132,8 +185,13 @@ module.exports = (io, app)=>{
 				socket.broadcast.emit("countOdId", sid.length);
 				socket.emit("countOdId", sid.length);
 			});
+
 			
 		});
+		io.of('/play').on('connection', socket=>{
+			console.log("connect with play");
+		});
+
 
 }
 
@@ -151,7 +209,7 @@ let findRoomByName = (allrooms, room)=>{
 		}
 	})
 	return findRoom > -1? true: false;
-	console.log(findRoom);
+	// console.log(findRoom);
 }
 
 let randomHex = ()=>{
@@ -159,10 +217,10 @@ let randomHex = ()=>{
 }
 
 let addUserToRoomList=(data, socket, roomListusers)=>{
-	console.log(data);
+	// console.log(data);
 	var uniqueUserId = socket.request.session.passport.user;
-	console.log("uniqueUserId: ",uniqueUserId);
-	console.log("socketID: ",socket.id);
+	// console.log("uniqueUserId: ",uniqueUserId);
+	// console.log("socketID: ",socket.id);
 	for (var i = 0; i < roomListusers.length; i++) {
 		if(roomListusers[i].luserId===uniqueUserId){
 			return
@@ -189,7 +247,7 @@ let spliceLeaveUser=(socket, roomListusers)=>{
 		return
 	}else{
 		roomListusers.splice(a,1);
-		console.log("after splice roomListusers", roomListusers);
+		// console.log("after splice roomListusers", roomListusers);
 	}
 
 }
@@ -201,8 +259,8 @@ let findSid = (sid,socket)=>{
 	}else{
 		return
 	};
-		console.log(sid);
-	console.log(socket.id);
+		// console.log(sid);
+	// console.log(socket.id);
 	
 }
 

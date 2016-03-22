@@ -5,6 +5,7 @@ const config = require('../config');
 
 
 module.exports = ()=>{
+	let r;
 	let routes = {
 		"get":{
 			'/': (req, res, next)=>{
@@ -30,18 +31,57 @@ module.exports = ()=>{
 
  				let getRoom  = findRoomById(req.app.locals.chatrooms, req.params.id);
  				// console.log("getRoom: ",getRoom);
- 				console.log("getRoom: ",getRoom);
+ 				console.log("req.query: ",req.query);
  				if(getRoom != undefined){
- 					res.render("room", {
+ 					if(req.query.play == true){
+ 						console.log("zou qi");
+ 						res.render("play", {
 						user:req.user,
 						host: config.host,
 						roomId: getRoom.roomId,
 						roomName: getRoom.room,
 						
-					})
- 				}else{
- 					return next();
+						})
+	 				}else{
+	 					console.log("bu zou!!!");
+	 					res.render("room", {
+							user:req.user,
+							host: config.host,
+							roomId: getRoom.roomId,
+							roomName: getRoom.room,
+							
+						})
+	 				}
+
  				}
+
+
+ 					return next();
+ 				
+
+ 			}],
+ 			"/room/:id/play": [isAuthenticated, (req, res, next)=>{
+ 				// console.log("req.app.locals.chatrooms: ",req.app.locals.chatrooms);
+ 				// console.log("req.params.id: ", req.params.id);
+
+ 				// let getRoom  = findRoomById(req.app.locals.chatrooms, req.params.id);
+ 				// // console.log("getRoom: ",getRoom);
+ 				// console.log("getRoom: ",getRoom);
+ 				// if(getRoom != undefined){
+ 				// 	res.render("room", {
+					// 	user:req.user,
+					// 	host: config.host,
+					// 	roomId: getRoom.roomId,
+					// 	roomName: getRoom.room,
+						
+					// })
+ 				// }else{
+ 				// 	return next();
+ 				// }
+
+ 					res.render("play", {
+ 						host: config.host,
+ 					})
 
  			}],
  			'/auth/facebook': passport.authenticate('facebook'),
