@@ -7,13 +7,13 @@ if(process.env.NODE_ENV==="production"){
 		fb:{
 			clientID: process.env.fbClientID,
 			clientSecret: process.env.fbClientSecret,
-			callbackURL: processs.env.host + "/auth/facebook/callback",
+			callbackURL: process.env.host + "/auth/facebook/callback",
 			profileFields:["id", "displayName", "photos"]
 		},
 		tw:{
 			consumerKey: process.env.twClientID,
 			consumerSecret: process.env.twClientSecret,
-			callbackURL: processs.env.host + "/auth/twitter/callback",
+			callbackURL: process.env.host + "/auth/twitter/callback",
 			profileFields:["id", "displayName", "photos"]
 		}
 
