@@ -175,6 +175,26 @@ var Chat = React.createClass({
   componentDidMount: function(){
     this.waitForShakeP();
   },
+  senPic: function(){
+    // alert("jaosn");
+    cloudinary.openUploadWidget({
+      cloud_name: 'smm2611',
+      upload_preset :"fifdewxz",
+
+    }, function(error, result){
+      if(!error){
+        console.log("result:, ", result);
+        var sms = "<img src='"+result[0].url+"'/>";
+        socket.emit("sendPlaySms", {
+          sms : sms,
+          userPic : userPic,
+          roomId : roomId,
+          userName : userName,
+          userId : userId,
+        })
+      }
+    })
+  },
   render: function() {
     var that = this;
     return (
@@ -183,7 +203,7 @@ var Chat = React.createClass({
         <div className="play-input">
           <input type="text" placeholder = "talk something" onKeyUp = {this.getSMS}/>
           <div className = "send" onClick = {this.handleShake} >Shake</div>
-          <div className = "pic" >Pic</div>
+          <div className = "pic" onClick = {this.senPic}>Pic</div>
         </div>
       </div>
     )
@@ -228,11 +248,15 @@ var Chat = React.createClass({
           }
         });
         var Dalog = React.createClass({
+          rawMarkup: function() {
+            var rawMarkup = marked(this.props.sms, {sanitize: false});
+            return { __html: rawMarkup };
+          },
           render: function() {
             return (
               <div className="dalog">
                   <div><img src={this.props.src} key = {this.props.key} /></div>
-                  <div>{this.props.sms}</div>
+                  <div dangerouslySetInnerHTML={this.rawMarkup()}></div>
                   <div>{this.props.time}</div>
               </div>
             );

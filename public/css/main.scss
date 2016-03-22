@@ -336,7 +336,7 @@ a*/
 						padding-left: 1em;
 						padding-right: 1em;
 						cursor: pointer;
-						
+
 						img{
 							width: 60px;
 							opacity: 0.5;
@@ -372,12 +372,15 @@ a*/
 						justify-content: space-between;
 						margin: 1em;
 						background: rgba(225,225,225,0.4);
+						padding-bottom: 0;
 						div:first-child{
 							width: 2em;
 							margin-right: 0.5em;
+							padding-bottom: 0;
 							img{
 								width: 2em;
 								height: 100%;
+								margin:0;
 							}
 						};
 						div:nth-child(2){
@@ -393,8 +396,11 @@ a*/
 						};
 						div{
 							width: 100px;
-							height: 2em;
+							height: auto;
 							line-height: 2em;
+							margin-bottom: 0;
+							padding-bottom: 0;
+
 							
 						}
 					}

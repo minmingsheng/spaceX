@@ -379,13 +379,16 @@ a*/
                 -ms-flex-pack: justify;
                     justify-content: space-between;
             margin: 1em;
-            background: rgba(225, 225, 225, 0.4); }
+            background: rgba(225, 225, 225, 0.4);
+            padding-bottom: 0; }
             #room #roomMain .play-room .play-chat .play-chat-feed .dalog div:first-child {
               width: 2em;
-              margin-right: 0.5em; }
+              margin-right: 0.5em;
+              padding-bottom: 0; }
               #room #roomMain .play-room .play-chat .play-chat-feed .dalog div:first-child img {
                 width: 2em;
-                height: 100%; }
+                height: 100%;
+                margin: 0; }
             #room #roomMain .play-room .play-chat .play-chat-feed .dalog div:nth-child(2) {
               width: 70%;
               color: black;
@@ -396,8 +399,10 @@ a*/
               padding-right: 1em; }
             #room #roomMain .play-room .play-chat .play-chat-feed .dalog div {
               width: 100px;
-              height: 2em;
-              line-height: 2em; }
+              height: auto;
+              line-height: 2em;
+              margin-bottom: 0;
+              padding-bottom: 0; }
         #room #roomMain .play-room .play-chat .play-input {
           height: 8%;
           /*background: blue;*/
