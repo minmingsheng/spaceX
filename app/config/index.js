@@ -3,7 +3,7 @@ if(process.env.NODE_ENV==="production"){
 	module.exports = {
 		host: process.env.host || "",
 		dbURI: process.env.dbURI,
-		sessionSecret: process.env.seesionSecret,
+		sessionSecret: process.env.sessionSecret,
 		fb:{
 			clientID: process.env.fbClientID,
 			clientSecret: process.env.fbClientSecret,
