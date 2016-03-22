@@ -33,16 +33,6 @@ module.exports = ()=>{
  				// console.log("getRoom: ",getRoom);
  				console.log("req.query: ",req.query);
  				if(getRoom != undefined){
- 					if(req.query.play == true){
- 						console.log("zou qi");
- 						res.render("play", {
-						user:req.user,
-						host: config.host,
-						roomId: getRoom.roomId,
-						roomName: getRoom.room,
-						
-						})
-	 				}else{
 	 					console.log("bu zou!!!");
 	 					res.render("room", {
 							user:req.user,
@@ -50,13 +40,15 @@ module.exports = ()=>{
 							roomId: getRoom.roomId,
 							roomName: getRoom.room,
 							
-						})
-	 				}
+	
+	 				});
 
+ 				}else{
+ 					return next();
  				}
 
 
- 					return next();
+ 					
  				
 
  			}],
