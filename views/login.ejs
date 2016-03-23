@@ -12,34 +12,72 @@
 		'use strict';
 		let socket = io("<%= host %>"+"/login");
 		let dotNum;
+		
 		socket.on('connect', function () {
-		  	// console.log("connect to server")
+		  	console.log("connect to server")
 		  	
 		 });
-		socket.emit("join");
-		window.addEventListener("mousemove", (e)=>{
-			socket.emit("mousemove", {
-				x: e.clientX || e.pageX,
-				y: e.clientY || e.pageY
+		window.addEventListener("load", function(){
+			let id;
+			let ids;
+			socket.emit("join");
+			socket.on("register", (data)=>{
+				id = data;
+				console.log("got id: ", id);
 			})
-		
-			socket.on("mousePos",(pos)=>{
-				// dot.style.top = pos.y+"px";
-				// dot.style.left = pos.x+"px";
+			window.addEventListener("mousemove", (e)=>{
+				socket.emit("mousemove", {
+					x: e.clientX || e.pageX,
+					y: e.clientY || e.pageY
+				})
+			
+				socket.on("mousePos",(pos)=>{
+					// dot.style.top = pos.y+"px";
+					// dot.style.left = pos.x+"px";
+				})
+				let num = 0;
+
 			})
 			socket.on("countOdId",(data)=>{
-				console.log(data)
-				for (var i = 0; i <data; i++) {
-					var dot = document.createElement("div");
-					dot.setAttribute("class", "dot");
+				// alert(data)
+				let dots = document.querySelectorAll(".dot");
+				for (var i = 0; i < dots.length; i++) {
+					if(dots[i]){
+						dots[i].remove();
+					}
+					console.log("remove 1");
+				};
+				ids = data.ids;
+				console.log("ids, ", ids);
+				for (var i = 0; i < ids.length; i++) {
+					var dot = document.createElement("div");	
+					dot.setAttribute("data-id", ids[i]);
+					dot.classList.add("dot");
+					dot.style.top = Math.floor(Math.random()*window.innerHeight)+"px";
+					dot.style.left = Math.floor(Math.random()*window.innerWidth)+"px";
 					document.body.appendChild(dot);
-					dot.style.top = 2*Math.floor(Math.random()*window.innerWidth)+"px";
-					dot.style.left = 2*Math.floor(Math.random()*window.innerHeight)+"px";
 				};
 
+
+			})
+			let mousemove = (e)=>{
+				socket.emit("mousemove", {
+					x: e.clientX,
+					y: e.clientY
+				})
+			}
+			window.addEventListener("mousemove", onmousemove);
+			socket.on("someOneMoving", (data)=>{
+				// console.log("someOneMovingdata: ", data);
+				let query = "div[data-id="+data.id.toString()+"]";
+				let moving = document.querySelector(query);
+				// console.log("moving: ", moving);
+				moving.style.top = data.x+ "px";
+				moving.style.left = data.y+ "px";
 			})
 
 		})
+
 	</script>
 	<body id="loginbd">
 		

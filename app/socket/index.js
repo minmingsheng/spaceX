@@ -151,43 +151,10 @@ module.exports = (io, app)=>{
 			})
 		});
 
-		io.of('/login').on('connection', socket=>{
-			console.log("successfully connect with login");
-			posObj = {
-				socketId: "",
-				pos: {
-						x: "",
-						y: ""
-					}
-			}
-			socket.on("mousemove", (data)=>{
-				posObj.socketId = socket.id;
-				posObj.pos.x =data.x;
-				posObj.pos.y =data.y; 
-				socket.broadcast.emit("mousePos", {
-					x: data.x,
-					y: data.y,
-				})
-			})
-
-			socket.on("disconnect", ()=>{
-				let a = sid.indexOf(socket.id);
-				sid.splice(a,1)
-				console.log(sid);
-				socket.broadcast.emit("countOdId", sid.length);
-				socket.emit("countOdId", sid.length);
-
-			});
-			socket.on("join", ()=>{
-				console.log("joining");
-				findSid(sid,socket);
-				socket.emit("countOdId", sid.length);
-				socket.broadcast.emit("countOdId", sid.length);
-				socket.emit("countOdId", sid.length);
-			});
+		require('./login.js')(io, app);
 
 			
-		});
+	
 		io.of('/play').on('connection', socket=>{
 			console.log("connect with play");
 		});

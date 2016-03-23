@@ -464,6 +464,8 @@ a*/
   height: 2px;
   border-radius: 50%;
   background: #09bebd;
+  background: white;
+  /*filter: blur(1px);*/
   position: absolute;
   -webkit-animation: dot 1s alternate infinite;
           animation: dot 1s alternate infinite; }
