@@ -466,6 +466,7 @@ a*/
 	background:#0bf6f5;
 	/*background: white;*/
 	/*filter: blur(1px);*/
+	transition: all 1s ease;
 	position: absolute;
 	animation: dot 1s alternate infinite linear;
 }
