@@ -27,15 +27,9 @@
 			})
 			window.addEventListener("mousemove", (e)=>{
 				socket.emit("mousemove", {
-					x: e.clientX || e.pageX,
-					y: e.clientY || e.pageY
+					x: e.clientX/window.innerWidth || e.pageX/window.innerWidth,
+					y: e.clientY/window.innerHeight || e.pageY/window.innerHeight
 				})
-			
-				socket.on("mousePos",(pos)=>{
-					// dot.style.top = pos.y+"px";
-					// dot.style.left = pos.x+"px";
-				})
-				let num = 0;
 
 			})
 			socket.on("countOdId",(data)=>{
@@ -60,20 +54,14 @@
 
 
 			})
-			let mousemove = (e)=>{
-				socket.emit("mousemove", {
-					x: e.clientX,
-					y: e.clientY
-				})
-			}
-			window.addEventListener("mousemove", onmousemove);
+
 			socket.on("someOneMoving", (data)=>{
 				// console.log("someOneMovingdata: ", data);
 				let query = "div[data-id="+data.id.toString()+"]";
 				let moving = document.querySelector(query);
 				// console.log("moving: ", moving);
-				moving.style.top = data.x+ "px";
-				moving.style.left = data.y+ "px";
+				moving.style.top = data.y*window.innerHeight+ "px";
+				moving.style.left = data.x*window.innerWidth+ "px";
 			})
 
 		})
