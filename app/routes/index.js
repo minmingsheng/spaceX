@@ -97,7 +97,10 @@ module.exports = ()=>{
 
 		},
 		"NA":(req, res, next)=>{
-				res.status(404).sendFile(process.cwd()+"/views/404.html");
+				// res.status(404).sendFile(process.cwd()+"/views/404.html");
+				res.render("fof", {
+					host: config.host,
+				})
  		},
 
 	}

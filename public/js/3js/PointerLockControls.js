@@ -2,22 +2,47 @@
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
  */
- var PointerLockControls = function ( camera, cannonBody ) {
 
+ var PointerLockControls = function ( camera, cannonBody, objpos, color) {
+    if(camera == null){
+        camera = new THREE.Object3D();
+    }
     var eyeYPos = 2; // eyes are 2 meters above the ground
     var velocityFactor = 0.2;
     var jumpVelocity = 10;
     var scope = this;
 
+    /*camera*/
     var pitchObject = new THREE.Object3D();
+    // pitchObject.position.x =30;
+    pitchObject.position.z=4;
+    // pitchObject.position.y=4;
     pitchObject.add( camera ); // camera is parameter
-    var yawObject = new THREE.Object3D();
-    yawObject.position.y = 20;
-    yawObject.add( pitchObject );
+
+    /*object*/
+    var geometry = new THREE.SphereGeometry(1, 3, 3 );
+    var material = new THREE.MeshLambertMaterial( { 
+        color: color,
+        transparent: true,
+        opacity: 0.4
+         } );
+    var yawObject = new THREE.Mesh( geometry, material );
+    cannonBody.position.set(objpos.x,objpos.y,objpos.z);
+    yawObject.position.set(objpos.x,objpos.y,objpos.z);
+    
+
+    console.log("yawObject: ");
+    yawObject.castShadow = true;
+    yawObject.receiveShadow = true;
+    yawObject.add(pitchObject);
+
+
+    // var yawObject = new THREE.Object3D();
+    // yawObject.position.x = 22;
+    // yawObject.add( pitchObject );
 
 
     var quat = new THREE.Quaternion();
-
     var moveForward = false;
     var moveBackward = false;
     var moveLeft = false;

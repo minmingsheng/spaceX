@@ -2,14 +2,14 @@
 module.exports = (io,app,sid,socket)=>{
 	var id = new Set();
 	io.of('/login').on('connection', socket=>{
-		console.log("successfully connect with login");
+		// console.log("successfully connect with login");
 		socket.on("join", ()=>{
-			console.log("joining");
+			// console.log("joining");
 			socket.emit("register", socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  );
 			if(!id.has(socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  )){
 				id.add(socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  )
 			}
-			console.log("sid: ", id.size);
+			// console.log("sid: ", id.size);
 			socket.join('110a')
 			id.forEach((f)=>{
 				console.log("id",f);
@@ -24,9 +24,9 @@ module.exports = (io,app,sid,socket)=>{
 		});
 
 		socket.on("mousemove", (data)=>{
-			console.log("id: ", socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  );
-			console.log("x: ", data.x);
-			console.log("y: ", data.y);
+			// console.log("id: ", socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  );
+			// console.log("x: ", data.x);
+			// console.log("y: ", data.y);
 			let send= ()=>{
 				socket.emit("someOneMoving", {
 					id: socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  ,
