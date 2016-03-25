@@ -63,6 +63,15 @@ module.exports = (io,app,sid,socket)=>{
 		})
 
 
+
+		socket.on("otherCollid", data=>{
+			 console.log("otherCollid", data);
+			 socket.broadcast.to(data.roomId).emit("collid", data.pos);
+		})
+
+
+
+
 		socket.on("disconnect", (data)=>{
 			console.log("leave!!!", data);
 

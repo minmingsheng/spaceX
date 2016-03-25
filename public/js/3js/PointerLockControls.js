@@ -59,20 +59,22 @@
     var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
     var upAxis = new CANNON.Vec3(0,1,0);
     cannonBody.addEventListener("collide",function(e){
-        var contact = e.contact;
-        console.log(e);
-        // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
-        // We do not yet know which one is which! Let's check.
-        if(contact.bi.id == cannonBody.id){ // bi is the player body, flip the contact normal
-            contact.ni.negate(contactNormal);
-            console.log("contact.bi.id");
-        }else{
-            contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
-            console.log("contact.ni");
-        }
-        // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
-            canJump = true;
+        // console.log("cannonBody.velocity: ", cannonBody.velocity );
+        console.log("attacked");
+        // var contact = e.contact;
+        // console.log(e);
+        // // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
+        // // We do not yet know which one is which! Let's check.
+        // if(contact.bi.id == cannonBody.id){ // bi is the player body, flip the contact normal
+        //     contact.ni.negate(contactNormal);
+        //     console.log("contact.bi.id");
+        // }else{
+        //     contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
+        //     console.log("contact.ni");
+        // }
+        // // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
+        // if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+        //     canJump = true;
     });
 
     var velocity = cannonBody.velocity;
@@ -214,6 +216,14 @@
         // Add to the object
         velocity.x += inputVelocity.x;
         velocity.z += inputVelocity.z;
+        socket.on("collid", function(data){
+            console.log("collid!!!!:", data);
+            cannonBody.velocity.x = data.x;
+            cannonBody.velocity.y = data.y;
+            cannonBody.velocity.z = data.z;
+            console.log("cannonBody.position !!!!:", cannonBody.position );
+            // cannonBody.position = data.pos;
+        })
         // console.log("velocity: ", velocity);
         yawObject.position.copy(cannonBody.position);
     };
