@@ -27,19 +27,18 @@ module.exports = (io,app,sid,socket)=>{
 			// console.log("id: ", socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  );
 			// console.log("x: ", data.x);
 			// console.log("y: ", data.y);
-			let send= ()=>{
-				socket.emit("someOneMoving", {
-					id: socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  ,
-					x: data.x,
-					y: data.y,
-				});
-			}
+			socket.emit("someOneMoving", {
+				id: socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  ,
+				x: data.x,
+				y: data.y,
+			});
+		
 			socket.broadcast.to("110a").emit("someOneMoving", {
 				id: socket.id.split("").splice(4,7).concat('A').join('').toLowerCase().replace("#", 'A')  ,
 				x: data.x,
 				y: data.y,
 			});
-			setTimeout(send,100);
+			
 		})
 
 		socket.on("disconnect", ()=>{

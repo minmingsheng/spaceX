@@ -153,6 +153,8 @@ module.exports = (io, app)=>{
 
 		require('./login.js')(io, app);
 		require('./fof.js')(io, app);
+		require('./multiPlay.js')(io, app);
+
 
 			
 	

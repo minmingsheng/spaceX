@@ -3,7 +3,7 @@
  * @author schteppe / https://github.com/schteppe
  */
 
- var PointerLockControls = function ( camera, cannonBody, objpos, color) {
+ var PointerLockControls = function ( camera, cannonBody, objpos, color,profilePic , profileName, roomId) {
     if(camera == null){
         camera = new THREE.Object3D();
     }
@@ -20,7 +20,7 @@
     pitchObject.add( camera ); // camera is parameter
 
     /*object*/
-    var geometry = new THREE.SphereGeometry(1, 3, 3 );
+    var geometry = new THREE.SphereGeometry(1, 10, 10 );
     var material = new THREE.MeshLambertMaterial( { 
         color: color,
         transparent: true,
@@ -35,7 +35,13 @@
     yawObject.castShadow = true;
     yawObject.receiveShadow = true;
     yawObject.add(pitchObject);
-
+    socket.emit("createPlayer", {
+        color: color,
+        profilePic: profilePic,
+        profileName: profileName,
+        objpos: objpos,
+        roomId: roomId
+    })
 
     // var yawObject = new THREE.Object3D();
     // yawObject.position.x = 22;
@@ -93,6 +99,7 @@
             case 38: // up
             case 87: // w
                 moveForward = true;
+                socket.emit("moveForward", roomId);
                 break;
 
             case 37: // left
@@ -126,6 +133,7 @@
             case 38: // up
             case 87: // w
                 moveForward = false;
+                socket.emit("notmoveForward", roomId)
                 break;
 
             case 37: // left
@@ -186,7 +194,6 @@
         if ( moveRight ){
             inputVelocity.x = velocityFactor * delta;
         }
-
         // Convert velocity to world coordinates
         euler.x = pitchObject.rotation.x; //camera
         euler.y = yawObject.rotation.y; //camera object
@@ -199,7 +206,7 @@
         // Add to the object
         velocity.x += inputVelocity.x;
         velocity.z += inputVelocity.z;
-
+        // console.log("velocity: ", velocity);
         yawObject.position.copy(cannonBody.position);
     };
 };
