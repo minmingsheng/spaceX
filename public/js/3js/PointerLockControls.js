@@ -104,16 +104,21 @@
 
             case 37: // left
             case 65: // a
-                moveLeft = true; break;
+                moveLeft = true;
+                socket.emit("moveLeft", roomId);
+                break;
+
 
             case 40: // down
             case 83: // s
                 moveBackward = true;
+                socket.emit("moveBackward", roomId);
                 break;
 
             case 39: // right
             case 68: // d
                 moveRight = true;
+                socket.emit("moveRight", roomId);
                 break;
 
             case 32: // space
@@ -139,16 +144,19 @@
             case 37: // left
             case 65: // a
                 moveLeft = false;
+                socket.emit("notmoveLeft", roomId)
                 break;
 
             case 40: // down
             case 83: // a
                 moveBackward = false;
+                socket.emit("notmoveBackward", roomId);
                 break;
 
             case 39: // right
             case 68: // d
                 moveRight = false;
+                socket.emit("notmoveRight", roomId);
                 break;
 
         }

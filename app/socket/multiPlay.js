@@ -37,6 +37,30 @@ module.exports = (io,app,sid,socket)=>{
 			 console.log("NOT!moveForward", data);
 			 socket.broadcast.to(data).emit("notmoveForward");
 		})
+		socket.on("moveBackward", data=>{
+			 console.log("moveBackward", data);
+			 socket.broadcast.to(data).emit("moveBackward");
+		})
+		socket.on("notmoveBackward", data=>{
+			 console.log("NOT!moveForward", data);
+			 socket.broadcast.to(data).emit("notmoveBackward");
+		})
+		socket.on("moveLeft", data=>{
+			 console.log("moveLeft", data);
+			 socket.broadcast.to(data).emit("moveLeft");
+		})
+		socket.on("notmoveLeft", data=>{
+			 console.log("NOT!moveLeft", data);
+			 socket.broadcast.to(data).emit("notmoveLeft");
+		})
+		socket.on("moveRight", data=>{
+			 console.log("moveRight", data);
+			 socket.broadcast.to(data).emit("moveRight");
+		})
+		socket.on("notmoveRight", data=>{
+			 console.log("NOT!moveRight", data);
+			 socket.broadcast.to(data).emit("notmoveRight");
+		})
 
 
 		socket.on("disconnect", (data)=>{
