@@ -146,16 +146,24 @@ module.exports = (io,app,sid,socket)=>{
 		})
 
 		socket.on("shoot" , (data)=>{
-			console.log(" is roomId: " + data.roomId);
-			console.log(" is profileId: " + data.profileId);
-			console.log(" is shootDirection: " + data.directionX);
-			console.log(" is shootDirection: " + data.directionY);
-			console.log(" is shootDirection: " + data.directionZ);
+			// console.log(" is roomId: " + data.roomId);
+			// console.log(" is profileId: " + data.profileId);
+			// console.log(" is shootDirection: " + data.directionX);
+			// console.log(" is shootDirection: " + data.directionY);
+			// console.log(" is shootDirection: " + data.directionZ);
 			socket.broadcast.to(data.roomId).emit("attacking", {
 				profileId: data.profileId,
 				x:data.directionX,
 				y:data.directionY,
 				z:data.directionZ
+			})
+		});
+
+		socket.on("rotation" , (data)=>{
+			// console.log(data.roomId);
+			socket.broadcast.to(data.roomId).emit("rotation", {
+				profileId: data.profileId,
+				rotation: data.rotation
 			})
 		});
 

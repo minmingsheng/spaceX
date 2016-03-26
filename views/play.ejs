@@ -630,6 +630,7 @@
 		    var mr = false; /*notmoveRight*/
 		    var otherInputVelocity = new THREE.Vector3();
 		    var otherEuler = new THREE.Euler();
+		    var quat = new THREE.Quaternion();
 		    function animate() {
 		        socket.on("moveForward", function(data){
 		        	// console.log("moveForward: ", data);
@@ -695,13 +696,18 @@
 	        		    otherInputVelocity.x = 0.2 * delta;
 	        		}
 	        		// // Convert velocity to world coordinates
+	        		otherEuler.x = 22; //camera
 	        		// otherEuler.x = pitchObject.rotation.x; //camera
 	        		// otherEuler.y = yawObject.rotation.y; //camera object
-	        		// // console.log(otherEuler);
-	        		// otherEuler.order = "XYZ";
-	        		// quat.setFromEuler(otherEuler);
-	        		// otherInputVelocity.applyQuaternion(quat);
-	        		// //quat.multiplyVector3(otherInputVelocity);
+	        		socket.on("rotation", function(data){
+	        			console.log(data);
+	        			otherEuler.y = data.rotation; //camera object
+	        		})
+	        		otherEuler.y = 11; //camera object
+	        		otherEuler.order = "XYZ";
+	        		quat.setFromEuler(otherEuler);
+	        		otherInputVelocity.applyQuaternion(quat);
+	        		// quat.multiplyVector3(otherInputVelocity);
 
 	        		// // Add to the object
 	        		sphereBody2Arr[i].velocity.x += otherInputVelocity.x;
