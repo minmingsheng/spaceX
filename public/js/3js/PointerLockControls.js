@@ -29,7 +29,7 @@
     var yawObject = new THREE.Mesh( geometry, material );
     cannonBody.position.set(objpos.x,objpos.y,objpos.z);
     yawObject.position.set(objpos.x,objpos.y,objpos.z);
-    
+    cannonBody.id = objpos.id;
 
     console.log("yawObject: ");
     yawObject.castShadow = true;
@@ -42,7 +42,8 @@
         objpos: objpos,
         roomId: roomId
     })
-
+    this.body = cannonBody;
+    this.mesh = yawObject;
     // var yawObject = new THREE.Object3D();
     // yawObject.position.x = 22;
     // yawObject.add( pitchObject );
@@ -60,11 +61,11 @@
     var upAxis = new CANNON.Vec3(0,1,0);
     cannonBody.addEventListener("collide",function(e){
         // console.log("cannonBody.velocity: ", cannonBody.velocity );
-        console.log("attacked");
+        // console.log("attacked");
         // var contact = e.contact;
         // console.log(e);
-        // // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
-        // // We do not yet know which one is which! Let's check.
+        // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
+        // We do not yet know which one is which! Let's check.
         // if(contact.bi.id == cannonBody.id){ // bi is the player body, flip the contact normal
         //     contact.ni.negate(contactNormal);
         //     console.log("contact.bi.id");
@@ -72,7 +73,7 @@
         //     contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
         //     console.log("contact.ni");
         // }
-        // // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
+        // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
         // if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
         //     canJump = true;
     });
