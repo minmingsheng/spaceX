@@ -69,7 +69,17 @@ module.exports = (io,app,sid,socket)=>{
 			 socket.broadcast.to(data.roomId).emit("collid", data.pos);
 		})
 
+		socket.on("askBarrier", data=>{
+			let j = [{x:12,y:10, z:0},{x:3,y:10, z:0},{x:21,y:10, z:0}]
+			// socket.broadcast.to(data).emit("barrier", j);
+			socket.emit("barrier", j);
+		})
 
+		socket.on("barrierChange", data=>{
+			console.log(data);
+			socket.broadcast.to(data.roomId).emit("barrierChange",data);
+			// socket.emit("barrierChange",data);
+		})
 
 
 		socket.on("disconnect", (data)=>{

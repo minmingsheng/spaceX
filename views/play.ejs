@@ -447,30 +447,47 @@
 		        document.body.appendChild( renderer.domElement );
 
 		        window.addEventListener( 'resize', onWindowResize, false );
+		        socket.emit("askBarrier");
 
-		        // Add boxes
-		        var halfExtents = new CANNON.Vec3(1,1,1);
-		        var boxShape = new CANNON.Box(halfExtents);
-		        var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
-		        for(var i=0; i<3; i++){
-		            // var x = (Math.random()-0.5)*20;
-		            // var y = 10+ (Math.random()-0.5)*1;
-		            // var z = (Math.random()-0.5)*20;
-		            var x = (Math.random()-0.5)*20;
-		            var y = 10;
-		            var z = 0;
-		            var boxBody = new CANNON.Body({ mass: 5 });
-		            boxBody.addShape(boxShape);
-		            var boxMesh = new THREE.Mesh( boxGeometry, material );
-		            world.addBody(boxBody);
-		            scene.add(boxMesh);
-		            boxBody.position.set(x,y,z);
-		            boxMesh.position.set(x,y,z);
-		            boxMesh.castShadow = true;
-		            boxMesh.receiveShadow = true;
-		            boxes.push(boxBody);
-		            boxMeshes.push(boxMesh);
-		        }
+		        socket.on("barrier", function(data){
+		        	// Add boxes
+		        	var halfExtents = new CANNON.Vec3(1,1,1);
+		        	var boxShape = new CANNON.Box(halfExtents);
+		        	var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+		        	for(var i=0; i<data.length; i++){
+		        	    // var x = (Math.random()-0.5)*20;
+		        	    // var y = 10+ (Math.random()-0.5)*1;
+		        	    // var z = (Math.random()-0.5)*20;
+		        	    // var x = (Math.random()-0.5)*20;
+		        	    // var y = 10;
+		        	    // var z = 0;
+		        	    var x = data[i].x;
+		        	    var y = data[i].y;
+		        	    var z = data[i].z;
+		        	    var boxBody = new CANNON.Body({ mass: 5 });
+		        	    boxBody.addShape(boxShape);
+		        	    boxBody.id = i;
+		        	    console.log(boxBody);
+		        	    var boxMesh = new THREE.Mesh( boxGeometry, material );
+		        	    world.addBody(boxBody);
+		        	    scene.add(boxMesh);
+		        	    boxBody.position.set(x,y,z);
+		        	    boxMesh.position.set(x,y,z);
+		        	    boxMesh.castShadow = true;
+		        	    boxMesh.receiveShadow = true;
+		        	    boxes[i]=boxBody;
+		        	    boxMeshes.push(boxMesh);
+		        	    boxBody.addEventListener("collide", function(e){
+		        	    	// console.log(e.target.id +"change position: "+e.target.position);
+		        	    	socket.emit("barrierChange", {
+		        	    		roomId: roomId,
+		        	    		barrierId: e.target.id,
+		        	    		postion: e.target.velocity
+		        	    	})
+		        	    })
+		        	}
+		        })
+
 
 
 
@@ -596,6 +613,8 @@
 		        })
 
 
+
+
 		        requestAnimationFrame( animate );
 		        // yawObject.position.copy(sphereBody2.position);
 		        // console.log("sphereBody2.position: ",sphereBody2.position);
@@ -603,6 +622,7 @@
 		        // jason[0].position.copy(sphereBody2.position)
 		        
 	        	// console.log(data.velocity);
+
 	        	var delta = Date.now() - time ;
 	        	for (var i = 0; i < jason.length; i++) {
 	        		delta *= 0.1;
@@ -658,7 +678,15 @@
 		                boxMeshes[i].quaternion.copy(boxes[i].quaternion);
 		            }
 		        }
+    	        socket.on("barrierChange", function(data){
+            		console.log(boxes[data.barrierId].position);
+            		// console.log("barrierChange: ", data);
+            		// boxes[data.barrierId].position.x = data.position.x;
+            		// boxes[data.barrierId].position.y = data.position.y;
+            		// boxes[data.barrierId].position.z = data.position.z;
+    	            // boxMeshes[data.barrierId].position.copy(boxes[data.barrierId].position);
 
+            	})
 		        controls.update( Date.now() - time );
 		        renderer.render( scene, camera );
 		        time = Date.now();
