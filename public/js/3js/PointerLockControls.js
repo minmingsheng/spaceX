@@ -218,11 +218,11 @@
         velocity.x += inputVelocity.x;
         velocity.z += inputVelocity.z;
         socket.on("collid", function(data){
-            console.log("collid!!!!:", data);
+            // console.log("collid!!!!:", data);
             cannonBody.velocity.x = data.x;
             cannonBody.velocity.y = data.y;
             cannonBody.velocity.z = data.z;
-            console.log("cannonBody.position !!!!:", cannonBody.position );
+            // console.log("cannonBody.position !!!!:", cannonBody.position );
             // cannonBody.position = data.pos;
         })
         // console.log("velocity: ", velocity);
