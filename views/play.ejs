@@ -766,7 +766,7 @@
 		    	var temp;
 		    	for (var i = 0; i < sphereBody2Arr.length; i++) {
 		    		// console.log(sphereBody2Arr[i].id);
-		    		if(sphereBody2Arr[i].id == data){
+		    		if(sphereBody2Arr[i].id == data.profileId){
 		    			temp = sphereBody2Arr[i];
 		    		}
 		    	};
@@ -784,24 +784,17 @@
 		    	ballMesh.receiveShadow = true;
 		    	balls.push(ballBody);
 		    	ballMeshes.push(ballMesh);
-		    	getShootDir(shootDirection);
-		    	ballBody.velocity.set(shootDirection.x * shootVelo,  shootDirection.y * shootVelo, shootDirection.z * shootVelo);
+		    	// getShootDir(shootDirection);
+		    	ballBody.velocity.set(data.x * shootVelo,  data.y * shootVelo, data.z * shootVelo);
 		    	// Move the ball outside the player sphere
-		    	x += shootDirection.x * (sphereShape.radius*1.02 + ballShape.radius);
-		    	y += shootDirection.y * (sphereShape.radius*1.02 + ballShape.radius);
-		    	z += shootDirection.z * (sphereShape.radius*1.02 + ballShape.radius);
+		    	x += data.x * (sphereShape.radius*1.02 + ballShape.radius);
+		    	y += data.y * (sphereShape.radius*1.02 + ballShape.radius);
+		    	z += data.z * (sphereShape.radius*1.02 + ballShape.radius);
 		    	ballBody.position.set(x,y,z);
 		    	ballMesh.position.set(x,y,z);
 		    });
 		    /*bullet*/
 		    window.addEventListener("click",function(e){
-		    	socket.emit("shoot", {
-		    		roomId,
-		    		profileId,
-
-		    	});
-		    	
-
 		        if(controls.enabled==true){
 		            var x = sphereBody.position.x;
 		            var y = sphereBody.position.y;
@@ -816,6 +809,14 @@
 		            balls.push(ballBody);
 		            ballMeshes.push(ballMesh);
 		            getShootDir(shootDirection);
+		            console.log("shootDirection: ,", shootDirection);
+		            socket.emit("shoot", {
+		            	roomId,
+		            	profileId,
+		            	directionX:shootDirection.x,
+		            	directionY:shootDirection.y,
+		            	directionZ:shootDirection.z
+		            });
 		            ballBody.velocity.set(shootDirection.x * shootVelo,  shootDirection.y * shootVelo, shootDirection.z * shootVelo);
 		            // Move the ball outside the player sphere
 		            x += shootDirection.x * (sphereShape.radius*1.02 + ballShape.radius);

@@ -148,7 +148,15 @@ module.exports = (io,app,sid,socket)=>{
 		socket.on("shoot" , (data)=>{
 			console.log(" is roomId: " + data.roomId);
 			console.log(" is profileId: " + data.profileId);
-			socket.broadcast.to(data.roomId).emit("attacking", data.profileId)
+			console.log(" is shootDirection: " + data.directionX);
+			console.log(" is shootDirection: " + data.directionY);
+			console.log(" is shootDirection: " + data.directionZ);
+			socket.broadcast.to(data.roomId).emit("attacking", {
+				profileId: data.profileId,
+				x:data.directionX,
+				y:data.directionY,
+				z:data.directionZ
+			})
 		});
 
 		socket.on("disconnect", (data)=>{
