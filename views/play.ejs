@@ -478,7 +478,7 @@
 		        	    boxes[i]=boxBody;
 		        	    boxMeshes.push(boxMesh);
 		        	    boxBody.addEventListener("collide", function(e){
-		        	    	// console.log(e.target.id +"change position: "+e.target.position);
+		        	    	console.log(e.target);
 		        	    	socket.emit("barrierChange", {
 		        	    		roomId: roomId,
 		        	    		barrierId: e.target.id,
