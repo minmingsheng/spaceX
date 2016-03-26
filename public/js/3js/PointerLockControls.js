@@ -97,32 +97,36 @@
     };
 
     var onKeyDown = function ( event ) {
-
+        socket.emit("p",{
+            roomId: roomId,
+            profileId: profileId,
+            pos: yawObject.position,
+        })
         switch ( event.keyCode ) {
 
             case 38: // up
             case 87: // w
                 moveForward = true;
-                socket.emit("moveForward", roomId);
+                // socket.emit("moveForward", roomId);
                 break;
 
             case 37: // left
             case 65: // a
                 moveLeft = true;
-                socket.emit("moveLeft", roomId);
+                // socket.emit("moveLeft", roomId);
                 break;
 
 
             case 40: // down
             case 83: // s
                 moveBackward = true;
-                socket.emit("moveBackward", roomId);
+                // socket.emit("moveBackward", roomId);
                 break;
 
             case 39: // right
             case 68: // d
                 moveRight = true;
-                socket.emit("moveRight", roomId);
+                // socket.emit("moveRight", roomId);
                 break;
 
             case 32: // space
@@ -142,25 +146,25 @@
             case 38: // up
             case 87: // w
                 moveForward = false;
-                socket.emit("notmoveForward", roomId)
+                // socket.emit("notmoveForward", roomId)
                 break;
 
             case 37: // left
             case 65: // a
                 moveLeft = false;
-                socket.emit("notmoveLeft", roomId)
+                // socket.emit("notmoveLeft", roomId)
                 break;
 
             case 40: // down
             case 83: // a
                 moveBackward = false;
-                socket.emit("notmoveBackward", roomId);
+                // socket.emit("notmoveBackward", roomId);
                 break;
 
             case 39: // right
             case 68: // d
                 moveRight = false;
-                socket.emit("notmoveRight", roomId);
+                // socket.emit("notmoveRight", roomId);
                 break;
 
         }

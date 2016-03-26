@@ -424,6 +424,7 @@
 		        	     } );
 		        	var jasonObject = new THREE.Mesh( geometry, material );
 		        	jasonObject.add(labelMesh);
+		        	jasonObject.id = id;
 		        	sphereBody2.position.set(x,y,z);
 		        	jasonObject.position.set(x,y,z);
 		        	jason.push(jasonObject);
@@ -631,39 +632,63 @@
 		    var otherInputVelocity = new THREE.Vector3();
 		    var otherEuler = new THREE.Euler();
 		    var quat = new THREE.Quaternion();
+		    socket.on("moveForward", function(data){
+		    	// console.log("moveForward: ", data);
+		    	mf = true;
+		    })
+		    socket.on("notmoveForward", function(data){
+		    	// console.log("notmoveForward: ", data);
+		    	mf = false;
+		    })
+		    socket.on("moveBackward", function(data){
+		    	// console.log("moveBackward: ", data);
+		    	mb= true;
+		    })
+		    socket.on("notmoveBackward", function(data){
+		    	// console.log("notmoveBackward: ", data);
+		    	mb = false;
+		    })
+		    socket.on("moveLeft", function(data){
+		    	// console.log("moveLeft: ", data);
+		    	ml= true;
+		    })
+		    socket.on("notmoveLeft", function(data){
+		    	// console.log("notmoveLeft: ", data);
+		    	ml = false;
+		    })
+		    socket.on("moveRight", function(data){
+		    	// console.log("moveRight: ", data);
+		    	mr= true;
+		    })
+		    socket.on("notmoveRight", function(data){
+		    	// console.log("notmoveRight: ", data);
+		    	mr = false;
+		    })
+
+		    socket.on("pos",function(data){
+		    	console.log(jason);
+		    	var temp, temp2;
+		    	for (var i = 0; i < jason.length; i++) {
+		    		if(jason[i].id== data.profileId){
+		    			temp = jason[i];
+		    		}
+		    	};
+		    	for (var j = 0; j< sphereBody2Arr.length; j++) {
+		    		if(sphereBody2Arr[j].id== data.profileId){
+		    			temp2 = sphereBody2Arr[j];
+		    		}
+		    		console.log(sphereBody2Arr[j]);
+		    	};
+
+		    	console.log(temp);
+		    	console.log(temp2);
+		    	console.log(data);
+		    	temp.position.set(data.position.x, data.position.y, data.position.z);
+		    	temp2.position.set(data.position.x, data.position.y, data.position.z);
+		    })
+
 		    function animate() {
-		        socket.on("moveForward", function(data){
-		        	// console.log("moveForward: ", data);
-		        	mf = true;
-		        })
-		        socket.on("notmoveForward", function(data){
-		        	// console.log("notmoveForward: ", data);
-		        	mf = false;
-		        })
-		        socket.on("moveBackward", function(data){
-		        	// console.log("moveBackward: ", data);
-		        	mb= true;
-		        })
-		        socket.on("notmoveBackward", function(data){
-		        	// console.log("notmoveBackward: ", data);
-		        	mb = false;
-		        })
-		        socket.on("moveLeft", function(data){
-		        	// console.log("moveLeft: ", data);
-		        	ml= true;
-		        })
-		        socket.on("notmoveLeft", function(data){
-		        	// console.log("notmoveLeft: ", data);
-		        	ml = false;
-		        })
-		        socket.on("moveRight", function(data){
-		        	// console.log("moveRight: ", data);
-		        	mr= true;
-		        })
-		        socket.on("notmoveRight", function(data){
-		        	// console.log("notmoveRight: ", data);
-		        	mr = false;
-		        })
+
 
 
 
@@ -678,40 +703,41 @@
 
 	        	var delta = Date.now() - time ;
 	        	for (var i = 0; i < jason.length; i++) {
-	        		delta *= 0.1;
+	        		// delta *= 0.1;
 
-	        		otherInputVelocity.set(0,0,0);
+	        		// otherInputVelocity.set(0,0,0);
 
-	        		if ( mf ){
-	        		    otherInputVelocity.z = - 0.2 * delta;
-	        		}
-	        		if ( mb ){
-	        		    otherInputVelocity.z = 0.2 * delta;
-	        		}
+	        		// if ( mf ){
+	        		//     otherInputVelocity.z = - 0.2 * delta;
+	        		// }
+	        		// if ( mb ){
+	        		//     otherInputVelocity.z = 0.2 * delta;
+	        		// }
 
-	        		if ( ml ){
-	        		    otherInputVelocity.x = -0.2 * delta;
-	        		}
-	        		if ( mr ){
-	        		    otherInputVelocity.x = 0.2 * delta;
-	        		}
-	        		// // Convert velocity to world coordinates
-	        		otherEuler.x = 22; //camera
-	        		// otherEuler.x = pitchObject.rotation.x; //camera
-	        		// otherEuler.y = yawObject.rotation.y; //camera object
-	        		socket.on("rotation", function(data){
-	        			console.log(data);
-	        			otherEuler.y = data.rotation; //camera object
-	        		})
-	        		otherEuler.y = 11; //camera object
-	        		otherEuler.order = "XYZ";
-	        		quat.setFromEuler(otherEuler);
-	        		otherInputVelocity.applyQuaternion(quat);
-	        		// quat.multiplyVector3(otherInputVelocity);
+	        		// if ( ml ){
+	        		//     otherInputVelocity.x = -0.2 * delta;
+	        		// }
+	        		// if ( mr ){
+	        		//     otherInputVelocity.x = 0.2 * delta;
+	        		// }
+	        		// // // Convert velocity to world coordinates
+	        		// otherEuler.x = 22; //camera
+	        		// // otherEuler.x = pitchObject.rotation.x; //camera
+	        		// // otherEuler.y = yawObject.rotation.y; //camera object
+	        		// // // socket.on("rotation", function(data){
+	        		// // // 	console.log(data);
+	        		// // otherEuler.y += 0.1; //camera object
+	        		// // // })
+	        		// console.log("otherEuler: ", otherEuler);
+	        		// otherEuler.y = 11; //camera object
+	        		// otherEuler.order = "XYZ";
+	        		// quat.setFromEuler(otherEuler);
+	        		// otherInputVelocity.applyQuaternion(quat);
+	        		// // quat.multiplyVector3(otherInputVelocity);
 
-	        		// // Add to the object
-	        		sphereBody2Arr[i].velocity.x += otherInputVelocity.x;
-	        		sphereBody2Arr[i].velocity.z += otherInputVelocity.z;
+	        		// // // Add to the object
+	        		// sphereBody2Arr[i].velocity.x += otherInputVelocity.x;
+	        		// sphereBody2Arr[i].velocity.z += otherInputVelocity.z;
 	        		// // console.log("velocity: ", velocity);
 	        		// yawObject.position.copy(cannonBody.position);
 

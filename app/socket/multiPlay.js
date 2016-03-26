@@ -43,7 +43,7 @@ module.exports = (io,app,sid,socket)=>{
 				if(!temp){
 					RadiantTeam.push(data.profileId);
 					socket.broadcast.to(data.roomId).emit("radiantRes", {
-						id: socket.id,
+						id: data.profileId,
 						info:pl[data.profileId]
 					});
 				}
@@ -62,7 +62,7 @@ module.exports = (io,app,sid,socket)=>{
 					// console.log("asdasdasdad13132131!!!!: ", pl[socket.id]);
 
 					socket.broadcast.to(data.roomId).emit("direRes",{
-						id: socket.id,
+						id: data.profileId,
 						info:pl[data.profileId]
 					});
 				}
@@ -164,6 +164,15 @@ module.exports = (io,app,sid,socket)=>{
 			socket.broadcast.to(data.roomId).emit("rotation", {
 				profileId: data.profileId,
 				rotation: data.rotation
+			})
+		});
+
+		socket.on("p" , (data)=>{
+			// console.log(data.roomId);
+			console.log(data);
+			socket.broadcast.to(data.roomId).emit("pos", {
+				profileId: data.profileId,
+				position: data.pos
 			})
 		});
 
