@@ -482,7 +482,7 @@
 		        	    	socket.emit("barrierChange", {
 		        	    		roomId: roomId,
 		        	    		barrierId: e.target.id,
-		        	    		postion: e.target.velocity
+		        	    		position: e.target.velocity
 		        	    	})
 		        	    })
 		        	}
@@ -679,13 +679,11 @@
 		            }
 		        }
     	        socket.on("barrierChange", function(data){
-            		console.log(boxes[data.barrierId].position);
+            		// console.log(boxes[data.barrierId].position);
             		// console.log("barrierChange: ", data);
-            		// boxes[data.barrierId].position.x = data.position.x;
-            		// boxes[data.barrierId].position.y = data.position.y;
-            		// boxes[data.barrierId].position.z = data.position.z;
-    	            // boxMeshes[data.barrierId].position.copy(boxes[data.barrierId].position);
-
+            		// boxes[data.barrierId].velocity.set(data.position.x, data.position.y, data.position.z );
+            		boxes[data.barrierId].position.set(data.position.x, data.position.y, data.position.z );
+    	            boxMeshes[data.barrierId].position.copy(boxes[data.barrierId].position);
             	})
 		        controls.update( Date.now() - time );
 		        renderer.render( scene, camera );
