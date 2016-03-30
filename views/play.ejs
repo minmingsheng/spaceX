@@ -75,7 +75,7 @@
 	.otherPlayerHp{
 		width: 200px;
 		height: 15px;
-		background: #03acac;
+		background: #38396c;
 	}
 	</style>
 	<script type="text/javascript" >
@@ -116,7 +116,8 @@
 							<img src=${data[prop].profilePic} alt="">
 							<p>${data[prop].profileName}</p>
 						</div>
-						<div class="otherPlayerHp"></div>`;
+						<div class="otherPlayerHp" data-id="${data[prop].profileId}"></div>`;
+
 				document.getElementById("userList").appendChild(div);
 			}
 		});
@@ -145,7 +146,7 @@
 					<h1 id="playerHp"></h1>
 				</div>
 
-				<h1>play@!!</h1>
+				<!-- <h1>play@!!</h1> -->
 		<!-- 		<div class='user'>
 					<h1><%= roomName %></h1>
 					<h4><%= profileName %></h4>
@@ -386,13 +387,13 @@
 		        socket.on("radiantRes", function(data){
 		        	// radiantTeam.push(id);
 		        	console.log("radiantRes: ", data);
-		        	renderPlayer({x:0, y:30, z: 20}, data.info.profileId, "blue");
+		        	renderPlayer({x:0, y:30, z: 20}, data.info.profileId, "#38396c");
 		        })
 		        socket.on("direRes", function(data){
 		        	// direTeam.push(id);
 		        	console.log("direRes: ", data);
 		        	console.log("direRes: ", data.info);
-		        	renderPlayer({x:0, y:30, z:-20}, data.info.profileId, "red");
+		        	renderPlayer({x:0, y:30, z:-20}, data.info.profileId, "#03acac");
 		        })
 
  				
@@ -414,7 +415,7 @@
 					var texture = loader.load("../../img/bg.jpg");
 					// texture.wrapS = texture.wrapT = THREE.RepeatWrapping; 
 					// texture.repeat.set(1000, 1000);
-					var label = new THREE.BoxGeometry( 1, 1, 0.1);
+					var label = new THREE.OctahedronGeometry(0.2);
 					var material = new THREE.MeshBasicMaterial({
 						color: color,
 						// map: texture
@@ -422,7 +423,6 @@
 					var labelMesh = new THREE.Mesh( label, material );
 					labelMesh.position.set(0,1.4,0);
 					// scene.add( labelMesh )
-
 		        	sphereShape2 = new CANNON.Sphere(1.3);
 		        	sphereBody2 = new CANNON.Body({ mass: 5 });
 		        	sphereBody2.addShape(sphereShape2);
@@ -519,9 +519,9 @@
 
 		        socket.on("barrier", function(data){
 		        	// Add boxes
-		        	var halfExtents = new CANNON.Vec3(1,1,1);
+		        	var halfExtents = new CANNON.Vec3(2,4,2);
 		        	var boxShape = new CANNON.Box(halfExtents);
-		        	var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+		        	var boxGeometry = new THREE.BoxGeometry(halfExtents.x,halfExtents.y*2,halfExtents.z);
 		        	for(var i=0; i<data.length; i++){
 		        	    // var x = (Math.random()-0.5)*20;
 		        	    // var y = 10+ (Math.random()-0.5)*1;
@@ -532,7 +532,7 @@
 		        	    var x = data[i].x;
 		        	    var y = data[i].y;
 		        	    var z = data[i].z;
-		        	    var boxBody = new CANNON.Body({ mass: 5 });
+		        	    var boxBody = new CANNON.Body({ mass: 100000 });
 		        	    boxBody.addShape(boxShape);
 		        	    boxBody.id = i;
 		        	    // console.log(boxBody);
@@ -554,7 +554,8 @@
 		        	    			position: e.target.position
 		        	    		})
 		        	    	}
-							setInterval(d, 600);
+		        	    	d();
+							// setInterval(d, 600);
 		        	    })
 		        	}
 		        })
@@ -603,44 +604,6 @@
 		        renderer.setSize( window.innerWidth, window.innerHeight );
 		    }
 
-	
-		        // var update = function ( delta ) {
-
-		        //     if ( scope.enabled === false ) return;
-
-		        //     delta *= 0.1;
-
-		        //     otherInputVelocity.set(0,0,0);
-
-		        //     if ( moveForward ){
-		        //         otherInputVelocity.z = -velocityFactor * delta;
-		        //     }
-		        //     if ( moveBackward ){
-		        //         otherInputVelocity.z = velocityFactor * delta;
-		        //     }
-
-		        //     if ( moveLeft ){
-		        //         otherInputVelocity.x = -velocityFactor * delta;
-		        //     }
-		        //     if ( moveRight ){
-		        //         otherInputVelocity.x = velocityFactor * delta;
-		        //     }
-		        //     // Convert velocity to world coordinates
-		        //     otherEuler.x = pitchObject.rotation.x; //camera
-		        //     otherEuler.y = yawObject.rotation.y; //camera object
-		        //     // console.log(otherEuler);
-		        //     otherEuler.order = "XYZ";
-		        //     quat.setFromEuler(otherEuler);
-		        //     otherInputVelocity.applyQuaternion(quat);
-		        //     //quat.multiplyVector3(otherInputVelocity);
-
-		        //     // Add to the object
-		        //     velocity.x += otherInputVelocity.x;
-		        //     velocity.z += otherInputVelocity.z;
-		        //     // console.log("velocity: ", velocity);
-		        //     yawObject.position.copy(cannonBody.position);
-		        // };
-		    
 		        
 		    var dt = 1/60;
 		    var mf = false; /*moveforward*/
@@ -697,7 +660,6 @@
 		    		}
 		    		console.log(sphereBody2Arr[j]);
 		    	};
-
 		    	console.log(temp);
 		    	console.log(temp2);
 		    	console.log(data);
@@ -706,11 +668,15 @@
 		    })
 
 		    socket.on("otherHp", function(data){
-		    	// var hp = document.querySelectorAll(".otherPlayerHp");
-		    	// for (var i = 0; i < hp.length; i++) {
-		    	// 	hp[i].style.width = data.
-		    	// };
-		    	// console.log(data);
+		    	var hp = document.querySelectorAll(".otherPlayerHp");
+		    	var temp =[];
+		    	for(prop in data){
+		    		var per = data[prop][0];
+		    		document.querySelector("div[data-id='"+prop+"']").style.width = 200*per+'px';
+		    		console.log(data[prop]);
+		    	}
+
+		    	console.dir("otherHp, " + data);
 		    })
 		    function animate() {
 		        requestAnimationFrame( animate );

@@ -135,7 +135,11 @@ module.exports = (io,app,sid,socket)=>{
 		})
 
 		socket.on("askBarrier", data=>{
-			let j = [{x:12,y:10, z:0},{x:3,y:10, z:0},{x:21,y:10, z:0}]
+			let j = [
+				{x:12,y:10, z:0},
+				{x:3,y:10, z:0},
+				{x:21,y:10, z:0}
+				]
 			// socket.broadcast.to(data).emit("barrier", j);
 			socket.emit("barrier", j);
 		})
@@ -181,6 +185,7 @@ module.exports = (io,app,sid,socket)=>{
 			hpList[data.profileId] = [data.per, data.profileName, data.profilePic];
 			console.log("HPdata", hpList);
 			socket.broadcast.to(data.roomId).emit("otherHp", hpList);
+			socket.emit("otherHp", hpList);
 		});
 		socket.on("disconnect", (data)=>{
 			// console.log("leave!!!", data);

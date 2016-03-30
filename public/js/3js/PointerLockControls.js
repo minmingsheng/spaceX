@@ -20,7 +20,7 @@
     pitchObject.add( camera ); // camera is parameter
 
     /*object*/
-    var geometry = new THREE.SphereGeometry(1, 10, 10 );
+    var geometry = new THREE.SphereGeometry(1, 3, 3 );
     var material = new THREE.MeshLambertMaterial( { 
         color: color,
         transparent: true,
@@ -76,8 +76,8 @@
                 per:per
             });
         }
-
-        setInterval(d, 700);
+        d();
+        // setInterval(d, 700);
 
         if(test <= 0){
             alert("die");
@@ -119,14 +119,7 @@
     };
 
     var onKeyDown = function ( event ) {
-        function dalay(){
-            socket.emit("p",{
-                roomId: roomId,
-                profileId: profileId,
-                pos: yawObject.position,
-            })
-        }
-        setInterval(dalay, 1000);
+        // setInterval(dalay, 1000);
         switch ( event.keyCode ) {
 
             case 38: // up
@@ -162,8 +155,16 @@
                 break;
         }
 
-    };
+        dalay();
 
+    };
+    function dalay(){
+        socket.emit("p",{
+            roomId: roomId,
+            profileId: profileId,
+            pos: yawObject.position,
+        })
+    }
     var onKeyUp = function ( event ) {
 
         switch( event.keyCode ) {
@@ -247,15 +248,7 @@
         // Add to the object
         velocity.x += inputVelocity.x;
         velocity.z += inputVelocity.z;
-        // socket.on("collid", function(data){
-        //     // console.log("collid!!!!:", data);
-        //     cannonBody.velocity.x = data.x;
-        //     cannonBody.velocity.y = data.y;
-        //     cannonBody.velocity.z = data.z;
-        //     // console.log("cannonBody.position !!!!:", cannonBody.position );
-        //     // cannonBody.position = data.pos;
-        // })
-        // console.log("velocity: ", velocity);
+
         yawObject.position.copy(cannonBody.position);
     };
 };
