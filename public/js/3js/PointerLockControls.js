@@ -97,11 +97,14 @@
     };
 
     var onKeyDown = function ( event ) {
-        socket.emit("p",{
-            roomId: roomId,
-            profileId: profileId,
-            pos: yawObject.position,
-        })
+        function dalay(){
+            socket.emit("p",{
+                roomId: roomId,
+                profileId: profileId,
+                pos: yawObject.position,
+            })
+        }
+        setInterval(dalay, 300);
         switch ( event.keyCode ) {
 
             case 38: // up
