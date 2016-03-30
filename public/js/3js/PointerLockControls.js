@@ -59,7 +59,29 @@
 
     var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
     var upAxis = new CANNON.Vec3(0,1,0);
+    var HP = 200;
+    var hp=200;
     cannonBody.addEventListener("collide",function(e){
+        hp--;
+        var per = hp/HP;
+        document.querySelector("#playerHp").style.width = per*200+"px";
+        var test = document.querySelector("#playerHp").style.width.replace("px", "")
+        console.log(test);
+        function d(){
+            socket.emit("hp", {
+                profileId: profileId,
+                profileName: profileName,
+                profilePic: profilePic,
+                roomId: roomId,
+                per:per
+            });
+        }
+
+        setInterval(d, 700);
+
+        if(test <= 0){
+            alert("die");
+        }
         // console.log("cannonBody.velocity: ", cannonBody.velocity );
         // console.log("attacked");
         // var contact = e.contact;
@@ -104,7 +126,7 @@
                 pos: yawObject.position,
             })
         }
-        setInterval(dalay, 300);
+        setInterval(dalay, 1000);
         switch ( event.keyCode ) {
 
             case 38: // up
@@ -225,14 +247,14 @@
         // Add to the object
         velocity.x += inputVelocity.x;
         velocity.z += inputVelocity.z;
-        socket.on("collid", function(data){
-            // console.log("collid!!!!:", data);
-            cannonBody.velocity.x = data.x;
-            cannonBody.velocity.y = data.y;
-            cannonBody.velocity.z = data.z;
-            // console.log("cannonBody.position !!!!:", cannonBody.position );
-            // cannonBody.position = data.pos;
-        })
+        // socket.on("collid", function(data){
+        //     // console.log("collid!!!!:", data);
+        //     cannonBody.velocity.x = data.x;
+        //     cannonBody.velocity.y = data.y;
+        //     cannonBody.velocity.z = data.z;
+        //     // console.log("cannonBody.position !!!!:", cannonBody.position );
+        //     // cannonBody.position = data.pos;
+        // })
         // console.log("velocity: ", velocity);
         yawObject.position.copy(cannonBody.position);
     };

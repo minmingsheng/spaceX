@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title> play</title>
-		<link rel="stylesheet" href="../../css/main.css">
+		<link rel="stylesheet" href="../../../css/main.css">
 		<script src="../../js/3js/Three.js"></script>
 		<script src="../../js/3js/cannon.js"></script>
 		<script src="../../js/3js/PointerLockControls.js"></script>
@@ -67,7 +67,16 @@
 	#instructions P{
 		clear: both;
 	}
-
+	#playerHp{
+		width: 200px;
+		height: 15px;
+		background: #38396c;
+	}
+	.otherPlayerHp{
+		width: 200px;
+		height: 15px;
+		background: #03acac;
+	}
 	</style>
 	<script type="text/javascript" >
 		"use strict";
@@ -107,7 +116,7 @@
 							<img src=${data[prop].profilePic} alt="">
 							<p>${data[prop].profileName}</p>
 						</div>
-						<div>####################</div>`;
+						<div class="otherPlayerHp"></div>`;
 				document.getElementById("userList").appendChild(div);
 			}
 		});
@@ -117,7 +126,7 @@
 	</script>
 	<body id="play">
 		<div id="blocker">
-
+	
 		    <div id="instructions">
 		    	<h1>choose your team</h1>
 		    	<div id="choose">
@@ -130,6 +139,12 @@
 		</div>
 		<header>
 			<nav>
+				<div>
+					<img src="<%= profilePic %>" alt="">
+					<p><%= profileName %></p>
+					<h1 id="playerHp"></h1>
+				</div>
+
 				<h1>play@!!</h1>
 		<!-- 		<div class='user'>
 					<h1><%= roomName %></h1>
@@ -431,13 +446,13 @@
 		        	sphereBody2Arr.push(sphereBody2);
 		        	// console.log("jasonObject.position:from 284 ",jasonObject.position);
 		        	scene.add(jasonObject);
-		        	sphereBody2.addEventListener("collide",function(e){
-		        	    // console.log("sphereBody2 attacked: ", sphereBody2.position);
-		        	    socket.emit("otherCollid", {
-		        	    	roomId: roomId,
-		        	    	pos:sphereBody2.position
-		        	    })
-		        	});
+		        	// sphereBody2.addEventListener("collide",function(e){
+		        	//     // console.log("sphereBody2 attacked: ", sphereBody2.position);
+		        	//     socket.emit("otherCollid", {
+		        	//     	roomId: roomId,
+		        	//     	pos:sphereBody2.position
+		        	//     })
+		        	// });
 		        }
 
 		       
@@ -532,11 +547,14 @@
 		        	    boxMeshes.push(boxMesh);
 		        	    boxBody.addEventListener("collide", function(e){
 		        	    	// console.log(e.target);
-		        	    	socket.emit("barrierChange", {
-		        	    		roomId: roomId,
-		        	    		barrierId: e.target.id,
-		        	    		position: e.target.position
-		        	    	})
+		        	    	function d(){
+		        	    		socket.emit("barrierChange", {
+		        	    			roomId: roomId,
+		        	    			barrierId: e.target.id,
+		        	    			position: e.target.position
+		        	    		})
+		        	    	}
+							setInterval(d, 600);
 		        	    })
 		        	}
 		        })
@@ -687,9 +705,14 @@
 		    	temp2.position.set(data.position.x, data.position.y, data.position.z);
 		    })
 
-
+		    socket.on("otherHp", function(data){
+		    	// var hp = document.querySelectorAll(".otherPlayerHp");
+		    	// for (var i = 0; i < hp.length; i++) {
+		    	// 	hp[i].style.width = data.
+		    	// };
+		    	// console.log(data);
+		    })
 		    function animate() {
-
 		        requestAnimationFrame( animate );
 		        // yawObject.position.copy(sphereBody2.position);
 		        // console.log("sphereBody2.position: ",sphereBody2.position);
@@ -700,46 +723,7 @@
 
 	        	var delta = Date.now() - time ;
 	        	for (var i = 0; i < jason.length; i++) {
-	        		// delta *= 0.1;
-
-	        		// otherInputVelocity.set(0,0,0);
-
-	        		// if ( mf ){
-	        		//     otherInputVelocity.z = - 0.2 * delta;
-	        		// }
-	        		// if ( mb ){
-	        		//     otherInputVelocity.z = 0.2 * delta;
-	        		// }
-
-	        		// if ( ml ){
-	        		//     otherInputVelocity.x = -0.2 * delta;
-	        		// }
-	        		// if ( mr ){
-	        		//     otherInputVelocity.x = 0.2 * delta;
-	        		// }
-	        		// // // Convert velocity to world coordinates
-	        		// otherEuler.x = 22; //camera
-	        		// // otherEuler.x = pitchObject.rotation.x; //camera
-	        		// // otherEuler.y = yawObject.rotation.y; //camera object
-	        		// // // socket.on("rotation", function(data){
-	        		// // // 	console.log(data);
-	        		// // otherEuler.y += 0.1; //camera object
-	        		// // // })
-	        		// console.log("otherEuler: ", otherEuler);
-	        		// otherEuler.y = 11; //camera object
-	        		// otherEuler.order = "XYZ";
-	        		// quat.setFromEuler(otherEuler);
-	        		// otherInputVelocity.applyQuaternion(quat);
-	        		// // quat.multiplyVector3(otherInputVelocity);
-
-	        		// // // Add to the object
-	        		// sphereBody2Arr[i].velocity.x += otherInputVelocity.x;
-	        		// sphereBody2Arr[i].velocity.z += otherInputVelocity.z;
-	        		// // console.log("velocity: ", velocity);
-	        		// yawObject.position.copy(cannonBody.position);
-
 	        	    jason[i].position.copy(sphereBody2Arr[i].position);
-	        	    // console.log("");
 	        	};
 		        
 
@@ -760,9 +744,6 @@
 		            }
 		        }
     	        socket.on("barrierChange", function(data){
-            		// console.log(boxes[data.barrierId].position);
-            		// console.log("barrierChange: ", data);
-            		// boxes[data.barrierId].velocity.set(data.position.x, data.position.y, data.position.z );
             		boxes[data.barrierId].position.set(data.position.x, data.position.y, data.position.z );
     	            boxMeshes[data.barrierId].position.copy(boxes[data.barrierId].position);
             	})

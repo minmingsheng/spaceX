@@ -1,6 +1,7 @@
 'use strict'
 module.exports = (io,app,sid,socket)=>{
 	let pl = {};
+	let hpList = {};
 	io.of('/multiPlay').on('connection', socket=>{
 
 		console.log("succuessfully connect with multiPlay");
@@ -176,6 +177,11 @@ module.exports = (io,app,sid,socket)=>{
 			})
 		});
 
+		socket.on("hp" , (data)=>{
+			hpList[data.profileId] = [data.per, data.profileName, data.profilePic];
+			console.log("HPdata", hpList);
+			socket.broadcast.to(data.roomId).emit("otherHp", hpList);
+		});
 		socket.on("disconnect", (data)=>{
 			// console.log("leave!!!", data);
 			if(pl[socket.id]== undefined){
