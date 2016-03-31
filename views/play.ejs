@@ -70,12 +70,15 @@
 	#playerHp{
 		width: 200px;
 		height: 15px;
-		background: #38396c;
+		background: #ea6e11;
+	}
+	p{
+		color:white;
 	}
 	.otherPlayerHp{
 		width: 200px;
 		height: 15px;
-		background: #38396c;
+		background: #ea6e11;
 	}
 	</style>
 	<script type="text/javascript" >
@@ -125,6 +128,8 @@
 
 
 	</script>
+	<audio id="audioElement" src="../../sound/ufo.wav"></audio>
+	<audio id="toogle" src="../../sound/toggle.wav"></audio>
 	<body id="play">
 		<div id="blocker">
 	
@@ -169,7 +174,13 @@
 		</main>
 		
 		<script>
-
+			var bgMusic = document.getElementById("audioElement");
+			setInterval(function(){
+				// bgMusic.play();
+			}, 1900 )
+// 		****************************************************************************
+// *                                   sound                                  *
+// ****************************************************************************
 		    var sphereShape, sphereBody, world, physicsMaterial, walls=[], balls=[], ballMeshes=[], boxes=[], boxMeshes=[];
 		    var sphereShape2; /*temp*/
 		    var sphereBody2Arr=[]; /*temp*/
@@ -179,7 +190,8 @@
 		    var controls,time = Date.now();
 		    var radiant;
 		    var loader = new THREE.TextureLoader();
-
+		    var moon;
+		    var ssun;
 		    var blocker = document.getElementById( 'blocker' );
 		    var instructions = document.getElementById( 'instructions' );
 
@@ -345,7 +357,7 @@
 
 		        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 		        scene = new THREE.Scene();
-		        scene.fog = new THREE.Fog(0xf3e9db, 0, 200 );
+		        scene.fog = new THREE.Fog(0x252649, 0, 110 );
 		        var ambient = new THREE.AmbientLight( 0x021238 );
 		        scene.add( ambient );
 
@@ -354,7 +366,7 @@
 		        light.target.position.set( 0, 0, 0 );
 		        if(true){
 		            light.castShadow = true;
-		            light.intensity = 1.1;
+		            light.intensity = 2.4;
 
 		            light.shadowCameraNear = 20;
 		            light.shadowCameraFar = 50;//camera.far;
@@ -362,22 +374,13 @@
 
 		            light.shadowMapBias = 0.1;
 		            light.shadowMapDarkness = 0.7;
-		            light.shadowMapWidth = 2*512;
+		            light.shadowMapWidth = 2*1;
 		            light.shadowMapHeight = 2*512;
 
 		            //light.shadowCameraVisible = true;
 		        }
 		        scene.add( light );
 
-		        // socket.on("radiantRes", function(data){
-		        // 	console.log(data.profileName+ " choose"+" THE RADIANT!!");
-		        	
-		        // })
-		        // socket.on("direRes", function(data){
-		        // 	console.log(data.profileName+ " choose"+" THE DIRE!!");
-		        // 	renderPlayer()
-		        // 	// createPlayer();
-		        // })
 		        var radiantTeam = [];
 		        var direTeam = [];
 		        var teams = radiantTeam.concat(direTeam);
@@ -406,7 +409,7 @@
 	        	scene.add( controls.getObject());
 		        
 
-		        function renderPlayer(objpos,id,color){
+		        function renderPlayer(objpos,id,color ){
 		        	var playerColor = ["pink", "salmon", "skyblue", "indogo", "red"]
 		        	var x = objpos.x;
 		        	var y = objpos.y;
@@ -419,6 +422,7 @@
 					var material = new THREE.MeshBasicMaterial({
 						color: color,
 						// map: texture
+						blending: THREE.MultiplyBlending
 					});
 					var labelMesh = new THREE.Mesh( label, material );
 					labelMesh.position.set(0,1.4,0);
@@ -433,7 +437,7 @@
 		        	var geometry = new THREE.SphereGeometry(1, 3,3 );
 		        	var material = new THREE.MeshLambertMaterial( { 
 		        		// map:floorTexture,
-		        	    color: playerColor[Math.floor(Math.random()*playerColor.length)],
+		        	    color: "red",
 		        	    // transparent: true,
 		        	    // opacity: 0.4
 		        	     } );
@@ -457,53 +461,53 @@
 
 		       
 		            
-		        
+// 		   ****************************************************************************
+// *                                    moon                              *
+// ****************************************************************************
+	
+	var gg = new THREE.SphereGeometry( 8, 32, 32 );
+	var mm = new THREE.MeshBasicMaterial( {color:0xf3e9db,map: THREE.ImageUtils.loadTexture('../../img/moon.jpg')} );
+	moon = new THREE.Mesh( gg, mm );
+	moon.position.set(1,6,-80);
+	scene.add( moon );
+// 		   ****************************************************************************
+// *                                    moon                              *
+// ****************************************************************************
+		            
+// 		   ****************************************************************************
+// *                                    sun                              *
+// ****************************************************************************
+	
+	var gsun = new THREE.SphereGeometry( 20, 32, 32 );
+	var ss = new THREE.MeshBasicMaterial( {color:0xf3e9db,map: THREE.ImageUtils.loadTexture('../../img/mars.jpg')} );
+	ssun = new THREE.Mesh( gsun, ss );
+	ssun.position.set(1,6,80);
+	scene.add( ssun );
 
 
-		        // var halfExtents = new CANNON.Vec3(1,1,1);
-		        // var boxShape = new CANNON.Box(halfExtents);
-		        // var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
-		        // for(var i=0; i<3; i++){
-		        //     var x = (Math.random()-0.5)*20;
-		        //     var y = 10+ (Math.random()-0.5)*1;
-		        //     var z = (Math.random()-0.5)*20;
-		        //     var boxBody = new CANNON.Body({ mass: 5 });
-		        //     boxBody.addShape(boxShape);
-		        //     var boxMesh = new THREE.Mesh( boxGeometry, material );
-		        //     world.addBody(boxBody);
-		        //     scene.add(boxMesh);
-		        //     boxBody.position.set(x,y,z);
-		        //     boxMesh.position.set(x,y,z);
-		        //     boxMesh.castShadow = true;
-		        //     boxMesh.receiveShadow = true;
-		        //     boxes.push(boxBody);
-		        //     boxMeshes.push(boxMesh);
-
-
-
-
-
-		        /*try*/
-		        // camera1 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		        // controls = new PointerLockControls( camera1 , sphereBody );
-		        // scene.add( controls.getObject() );
-
+// 		   ****************************************************************************
+// *                                    sun                              *
+// ****************************************************************************
 
 
 
 		        // console.info(controls);
 		        // floor
-		        geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
+		        geometry = new THREE.PlaneGeometry( 50, 100, 50, 50 );
 		        geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-		        var texture = loader.load("../../img/bg.jpg");
+		        var floorTexture =new THREE.ImageUtils.loadTexture('../../img/sun.jpg');
+				floorTexture.wrapT = THREE.RepeatWrapping; 
+		        floorTexture.repeat.set(1,1);
 		        material = new THREE.MeshLambertMaterial( { 
-		        	map: texture,
-		        	color: 0xac5653 
+		        	map: floorTexture,
+		        	color: 0x67a0e5,
+		        	// blending: THREE.AdditiveBlending,
 		        } );
 
 		        mesh = new THREE.Mesh( geometry, material );
 		        mesh.castShadow = true;
 		        mesh.receiveShadow = true;
+		        mesh.position.set(7,0,0)
 		        scene.add( mesh );
 
 		        renderer = new THREE.WebGLRenderer();
@@ -511,24 +515,25 @@
 		        renderer.shadowMapSoft = true;
 		        renderer.setSize( window.innerWidth, window.innerHeight );
 		        renderer.setClearColor( scene.fog.color, 1 );
-
+ 
 		        document.body.appendChild( renderer.domElement );
 
 		        window.addEventListener( 'resize', onWindowResize, false );
 		        socket.emit("askBarrier");
 
 		        socket.on("barrier", function(data){
+		        	var texture =new THREE.ImageUtils.loadTexture('../../img/marble.jpg');
+					texture.wrapS = texture.wrapT = THREE.RepeatWrapping; 
+					texture.repeat.set(1,1);
+		        	var material1 = new THREE.MeshLambertMaterial({
+		        		// color: 0xfff6d6,
+		        		map: texture
+		        	});
 		        	// Add boxes
-		        	var halfExtents = new CANNON.Vec3(2,4,2);
+		        	var halfExtents = new CANNON.Vec3(1,5,1);
 		        	var boxShape = new CANNON.Box(halfExtents);
-		        	var boxGeometry = new THREE.BoxGeometry(halfExtents.x,halfExtents.y*2,halfExtents.z);
+		        	var boxGeometry = new THREE.CylinderGeometry(halfExtents.x/2,halfExtents.z/44, halfExtents.y*2,5,10);
 		        	for(var i=0; i<data.length; i++){
-		        	    // var x = (Math.random()-0.5)*20;
-		        	    // var y = 10+ (Math.random()-0.5)*1;
-		        	    // var z = (Math.random()-0.5)*20;
-		        	    // var x = (Math.random()-0.5)*20;
-		        	    // var y = 10;
-		        	    // var z = 0;
 		        	    var x = data[i].x;
 		        	    var y = data[i].y;
 		        	    var z = data[i].z;
@@ -538,6 +543,23 @@
 		        	    // console.log(boxBody);
 		        	    var boxMesh = new THREE.Mesh( boxGeometry, material );
 		        	    world.addBody(boxBody);
+
+
+		    			var fireTexture =new THREE.ImageUtils.loadTexture('../../img/fire.jpg');
+		        	    if(i%2==0){
+			        	    var de = new THREE.OctahedronGeometry(0.3);
+		        	    }else{
+		        	    	var de = new THREE.OctahedronGeometry(1.2);
+		        	    }
+		        	    var ma = new THREE.MeshBasicMaterial( {map: fireTexture} );
+		        	    var dee = new THREE.Mesh( de, ma );
+		        	    var xx = 0, yy = 5, zz = 0;
+		        	    dee.castShadow = true;
+		        	    dee.receiveShadow = true;
+		        	    dee.position.set(xx,yy,zz);
+		        	    boxMesh.add( dee );
+
+
 		        	    scene.add(boxMesh);
 		        	    boxBody.position.set(x,y,z);
 		        	    boxMesh.position.set(x,y,z);
@@ -560,42 +582,62 @@
 		        	}
 		        })
 
+		    }
+
+		    for (var i = 0; i < 10; i++) {
+				var fireTexture =new THREE.ImageUtils.loadTexture('../../img/fire.jpg');
+	    	    var de = new THREE.OctahedronGeometry(Math.random()*0.7);
+	    	    var ma = new THREE.MeshBasicMaterial( {map: fireTexture} );
+	    	    var dee = new THREE.Mesh( de, ma );
+	    	    dee.castShadow = true;
+	    	    dee.receiveShadow = true;
+	    	    dee.position.set(Math.random()*10,0,Math.random()*10-5);
+	    	    scene.add( dee );
+		    };
 
 
-
-		        // Add linked boxes
-		        // var size = 0.5;
-		        // var he = new CANNON.Vec3(size,size,size*0.1);
-		        // var boxShape = new CANNON.Box(he);
-		        // var mass = 0;
-		        // var space = 0.1 * size;
-		        // var N = 5, last;
-		        // var boxGeometry = new THREE.BoxGeometry(he.x*2,he.y*2,he.z*2);
-		        // for(var i=0; i<N; i++){
-		        //     var boxbody = new CANNON.Body({ mass: mass });
-		        //     boxbody.addShape(boxShape);
-		        //     var boxMesh = new THREE.Mesh(boxGeometry, material);
-		        //     boxbody.position.set(5,(N-i)*(size*2+2*space) + size*2+space,0);
-		        //     boxbody.linearDamping = 0.01;
-		        //     boxbody.angularDamping = 0.01;
-		        //     // boxMesh.castShadow = true;
-		        //     boxMesh.receiveShadow = true;
-		        //     world.addBody(boxbody);
-		        //     scene.add(boxMesh);
-		        //     boxes.push(boxbody);
-		        //     boxMeshes.push(boxMesh);
-
-		        //     if(i!=0){
-		        //         // Connect this body to the last one
-		        //         var c1 = new CANNON.PointToPointConstraint(boxbody,new CANNON.Vec3(-size,size+space,0),last,new CANNON.Vec3(-size,-size-space,0));
-		        //         var c2 = new CANNON.PointToPointConstraint(boxbody,new CANNON.Vec3(size,size+space,0),last,new CANNON.Vec3(size,-size-space,0));
-		        //         world.addConstraint(c1);
-		        //         world.addConstraint(c2);
-		        //     } else {
-		        //         mass=0.3;
-		        //     }
-		        //     last = boxbody;
-		        // }
+		    function scene(){
+		    	var texture =new THREE.ImageUtils.loadTexture('../../img/marble.jpg');
+					texture.wrapS = texture.wrapT = THREE.RepeatWrapping; 
+					texture.repeat.set(1,1);
+		        	var material1 = new THREE.MeshLambertMaterial({
+		        		// color: 0xfff6d6,
+		        		map: texture
+		        	});
+		        	// Add boxes
+		        	var halfExtents = new CANNON.Vec3(1,5,1);
+		        	var boxShape = new CANNON.Box(halfExtents);
+		        	var boxGeometry = new THREE.BoxGeometry(halfExtents.x,halfExtents.y*2,halfExtents.z);
+		        	for(var i=0; i<10; i++){
+		        	    var x = data[i].x;
+		        	    var y = data[i].y;
+		        	    var z = data[i].z;
+		        	    var boxBody = new CANNON.Body({ mass: 100000 });
+		        	    boxBody.addShape(boxShape);
+		        	    boxBody.id = i;
+		        	    // console.log(boxBody);
+		        	    var boxMesh = new THREE.Mesh( boxGeometry, material1 );
+		        	    world.addBody(boxBody);
+		        	    scene.add(boxMesh);
+		        	    boxBody.position.set(x,y,z);
+		        	    boxMesh.position.set(x,y,z);
+		        	    boxMesh.castShadow = true;
+		        	    boxMesh.receiveShadow = true;
+		        	    boxes[i]=boxBody;
+		        	    boxMeshes.push(boxMesh);
+		        	    boxBody.addEventListener("collide", function(e){
+		        	    	// console.log(e.target);
+		        	    	function d(){
+		        	    		socket.emit("barrierChange", {
+		        	    			roomId: roomId,
+		        	    			barrierId: e.target.id,
+		        	    			position: e.target.position
+		        	    		})
+		        	    	}
+		        	    	d();
+							// setInterval(d, 600);
+		        	    })
+		        	}
 		    }
 
 		    function onWindowResize() {
@@ -679,6 +721,9 @@
 		    	console.dir("otherHp, " + data);
 		    })
 		    function animate() {
+		    	moon.rotation.z +=0.001;
+		    	ssun.rotation.x +=0.005;
+		    	ssun.rotation.y +=0.005;
 		        requestAnimationFrame( animate );
 		        // yawObject.position.copy(sphereBody2.position);
 		        // console.log("sphereBody2.position: ",sphereBody2.position);
@@ -772,6 +817,7 @@
 		    /*bullet*/
 		    window.addEventListener("click",function(e){
 		        if(controls.enabled==true){
+		        	document.getElementById('toogle').play();
 		            var x = sphereBody.position.x;
 		            var y = sphereBody.position.y;
 		            var z = sphereBody.position.z;
