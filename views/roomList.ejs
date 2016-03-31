@@ -80,7 +80,9 @@
 				let luserName = profiles[i].luserName;
 				let luserPic = profiles[i].luserPic.toString();
 				let newUser = document.createElement("div");
-				newUser.classList.add('user')
+				newUser.classList.add('user');
+				newUser.style.animationDelay = 200*i+"ms"
+
 				let newImg = document.createElement("img");
 				let p = document.createElement("p");
 				p.textContent = luserName
@@ -135,11 +137,15 @@
 
 
 	</script>
+	<div id ="blur"></div>
 	<body id="roomList">
 		<header>
 			<nav>
-				<h1>Room</h1>
+				<h1>Welcome <%= user.profileName %> !</h1>
 				<h1 id="ppppcccc"style="display: none"><%= user.profilePic %></h1>
+				<div><img src="<%= user.profilePic %>" alt=""></div>
+				<p><%= user.profileName %></p>
+				<a href="/">logout</a>
 			</nav>
 		</header>
 		<main id="roomMain">

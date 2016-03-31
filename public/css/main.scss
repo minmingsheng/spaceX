@@ -6,7 +6,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,900,900italic,700italic,700,500italic,500,400italic,300italic,300,100italic,100);
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -57,7 +57,7 @@ table {
 */
 
 body{
-
+	font-family: 'Roboto', sans-serif;
 	background: url(../img/bg.jpg) no-repeat;
 	background-size: cover;
 	background-size: 200%;
@@ -73,20 +73,55 @@ body{
 	}
 
 }
+@keyframes flip{
+	from{
+		transform: rotateX(40deg);
+		opacity: 0;
+	}
+}
 #loginbd{
 	background: url(../img/bg.jpg) no-repeat;
 	background-attachment: fixed;
 
 	.login-form{
-		h1{
-			color:white;
-		}
+		perspective: 100px;
 		display: block;
-		margin: 300px auto;
+		margin: 250px auto;
 		text-align: center;
 		box-sizing:content-box;
-		/*background: red;*/
-
+		h1{
+			/*background: url(http://projection-mapping.org/wp-content/uploads/2014/03/tumblr_myj7i25arL1qzt4vjo1_500.gif);*/
+			background: url(https://img.buzzfeed.com/buzzfeed-static/static/2014-04/enhanced/webdr06/1/12/anigif_original-grid-image-25835-1396369332-38.gif);
+			background-position: center center;
+			font-weight: bold;
+			color:rgba(225,225,225,0);
+			font-family: times;
+			font-size: 4em;
+			/*background-clip: text;*/
+			-webkit-background-clip: text;
+			animation: flip 3s 100ms 1 ease backwards;
+		}
+		p{
+			color: white;
+			font-weight: 100;
+			font-size: 0.7em;
+			opacity: 0.7;
+			position: absolute;
+			bottom:-80%;
+			left:0;
+			right: 0;
+			margin:auto;
+		}
+		h6{
+			color:white;
+			width: 340px;
+			margin:auto;
+			margin-bottom: 0;
+			font-size: 1em;
+			text-align: left;
+			font-weight: 400;
+			opacity: 0.6;
+		}
 		button{
 			display: block;
 			border:none;
@@ -94,23 +129,87 @@ body{
 			height: 40px;
 			margin:auto;
 			border-radius: 5px;
-			margin-top: 1em;
+			margin-top: 0.5em;
 			margin-bottom: 1em;
 			font-size: 0.8em;
 			transition: all 200ms ease;
+			color: white;
 			&:hover{
 				box-shadow: 1px 1px 11px rgb(0, 228, 217);
 			};
 		}
 
 		.facebookBtn{
-			background:  #3b5998;
+			background:  #304c92;
 			outline:none;
-
+			position: relative;
+			&::after{
+				position:absolute;
+				content:"";
+				background:url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/600px-Facebook_logo_%28square%29.png);
+				background-size: cover;
+				width: 20px;
+				height: 20px;
+				left: 5%;
+				top:25%;
+				transition: all 300ms ease;
+				/*opacity: 0;*/
+				/*background: red;*/
+			};
+			&::before{
+				position:absolute;
+				content:"";
+				background:#fff;
+				border-radius: 50%;
+				width: 7px;
+				box-shadow: 1px 1px 8px #fff;
+				height: 7px;
+				left: -10%;
+				top:35%;
+				transition: all 1s ease;
+				opacity: 0;
+				/*background: red;*/
+			};
+			&:hover{
+				&::before{
+					opacity: 1;
+				}
+			}
 		}	
 		.twitterBtn{
-			background: #4099FF;
+			background: #2ca9e1;
 			outline:none;
+			position: relative;
+			&::after{
+				position:absolute;
+				content:"";
+				background:url(http://journeylifecenter.org/wp-content/uploads/2013/12/one-twitter-png.png);
+				background-size: cover;
+				width: 30px;
+				height: 30px;
+				left: 5%;
+				top:15%;
+				/*background: red;*/
+			};
+			&::before{
+				position:absolute;
+				content:"";
+				background:#fff;
+				border-radius: 50%;
+				width: 7px;
+				box-shadow: 1px 1px 8px #fff;
+				height: 7px;
+				left: -10%;
+				top:35%;
+				transition: all 1s ease;
+				opacity: 0;
+				/*background: red;*/
+			};
+			&:hover{
+				&::before{
+					opacity: 1;
+				}
+			}
 		}	
 	}
 
@@ -118,51 +217,199 @@ body{
 }
 
 #roomList{
+	#blur{
+		position: fixed;
+		width: 300px;
+		height:300px;
+		background:#bc304f;
+		right: -100px;
+		bottom: 20px;
+		filter: blur(230px);
+	}
+	font-family: 'Roboto', sans-serif;
+	header{
+		h1{
+			font-weight: 100;
+			margin:0.4em;
+			font-size: 2em;
+		}
+		nav{
+			display: flex;
+			justify-content: space-between;
 
+			p{
+				width: 10px;
+			}
+			p, a,h1,div{
+				flex: 2;
+			}
+			p{
+				flex: 2;
+				/*background: #08c7bf;*/
+				background: linear-gradient(to left, #010e35, #01c2ba);
+				text-align: center;
+				font-weight: 300;
+				color: #010e35;
+				line-height: 55px;
+			}
+			h1{
+				flex: 10;
+				color:#fff;
+			}
+			a{
+				flex: 1;
+				width: 10px;
+				background:#010e35;
+				color:#fff;
+				text-align: center;
+				font-weight: 300;
+				line-height: 55px;
+				border-left: 1px solid #010e35;
+				transition: all 800ms ease;
+				&:hover{
+					color:#08c7bf;
+				};
+			}
+			img{
+				float: right;
+				border:1px solid #010e35;
+			}
+			div{
+				img{
+					margin-top: 5px;
+					border-radius: 50%;
+					animation: bounce 900ms 1 ease;
+				}
+			}
+		}
+	}
+	@keyframes bounce{
+		from, 60%, 75%, 90%, to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
 
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -3000px, 0);
+    transform: translate3d(0, -3000px, 0);
+  }
+
+  60% {
+    -webkit-transform: translate3d(0, 25px, 0);
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+    opacity: 1;
+
+  }
+
+  90% {
+    -webkit-transform: translate3d(0, 5px, 0);
+    transform: translate3d(0, 5px, 0);
+  }
+
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
+	}
 	.parent-of-rl-ul{
 		display: flex;
 	}
 	.userList{
 		margin-left: 3em;
 		width: 300px;
-		background: #ededed;
-
+		background: linear-gradient(to left, #041235, #ec3856);
+		padding-top: 0.5em;
+		>P{
+			margin-bottom: 0.5em;
+			position: relative;
+			color:#e1e1e1;
+			font-weight: 300;
+			letter-spacing: 0.5px;
+			transform: translate(300px 0);
+			text-align: right;
+			padding-right: 1em;
+			&::before{
+				content:"";
+				position: absolute;
+				background: url(http://image005.flaticon.com/1/svg/115/115410.svg);
+				background-size: cover;
+				width: 30px;
+				height:30px;
+				margin-right: 1em;
+				left:8%;
+				top:-50%;
+			};
+		}
 		.users{
 			width: 100%;
 			height: 100%;
 			overflow: scroll;
-			background: rgb(16, 17, 18);
+			background: url(../img/userbg.jpg);
+
 			.user{
-				border-top: 3px solid rgb(0, 206, 196);
-				height: 70px;
+				height: 40px;
 				width: 80%;
-				background: rgb(67, 138, 200); 
+				background: rgba(225,225,225,0.4);
 				display: flex;
 				margin:auto;
-				margin-top: 1em;
+				margin-top: 0.6em;
 				padding-top: 0.3em;
 				padding-bottom: 0.3em;
 				padding-left: 0.5em;
+				padding-right: 0.5em;
+				animation: slideIn 800ms 800ms 1 ease backwards;
 				img{
 					/*border-radius: 50%;*/
-					border-radius: 10px;
-					width: 70px;
-					height: 70px;
-					display: inline;
+					width: 40px;
+					border: 2px solid #0b0c20;
+					/*height: auto;*/
 				}
 				p{
 					text-align: center;
 					width: 100%;
-					line-height: 70px;
+					line-height: 40px;
 				}
 			}
 		}
 	}
+	@keyframes slideIn{
+		from{
+			opacity: 0;
+			transform: translate(200px, 0);
+		}
+	}
 	.roomList{
 		width: 80%;
-		background: #fff;
+		background: linear-gradient(to left,#ec3856, #041235);
 		color: #000;
+		padding-top: 0.5em;
+		>p{
+			margin-bottom: 0.5em;
+			position: relative;
+			color:#e1e1e1;
+			font-weight: 300;
+			letter-spacing: 0.5px;
+			transform: translate(300px 0);
+			text-align: left;
+			padding-left: 1em;
+			&::before{
+				content:"";
+				position: absolute;
+				background: url(http://image005.flaticon.com/1/svg/112/112540.svg);
+				background-size: cover;
+				width: 25px;
+				height:25px;
+				margin-right: 1em;
+				right:2%;
+				top:-30%;
+			};
+		}
 		.rooms{
 			width: 100%;
 			height: 50%;
@@ -296,8 +543,8 @@ body{
 	.userList, .roomList{
 		height: 90vh;
 		overflow: hidden;
-		border-top-right-radius: 10px;
-		border-top-left-radius:10px;
+		border-top-right-radius: 3px;
+		border-top-left-radius:3px;
 		text-align: center;
 	}
 
@@ -462,11 +709,11 @@ a*/
 ****************************************************************************
 */
 .dot{
-	width: 2px;
-	height: 2px;
+	width: 10px;
+	height: 10px;
 	border-radius: 50%;
-	background:red;
-	/*background: white;*/
+	opacity: 0.4;
+	background: #44fcf3;
 	/*filter: blur(1px);*/
 	transition: all 100ms linear;
 	position: absolute;

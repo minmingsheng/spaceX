@@ -37,6 +37,10 @@
 		position: absolute;
 		right: 0;
 	}
+	nav{
+		width: 200px;
+		height: auto;
+	}
 	#instructions {
 
 	    width: 100%;
@@ -47,6 +51,10 @@
 		padding-top: 100px;
 	    cursor: pointer;
 
+	}
+	#instructions p{
+		margin-top: 1em;
+		opacity: 0.5;
 	}
 	#choose{
 		width: 400px;
@@ -62,7 +70,7 @@
 		border-radius: 10px;
 		line-height: 180px;
 		height: 180px;
-		box-shadow: 1px 1px 11px rgba(0,0,0,0.5);
+		box-shadow: 1px 1px 20px rgba(234, 110, 17, 0.6);
 	}
 	#instructions P{
 		clear: both;
@@ -70,16 +78,43 @@
 	#playerHp{
 		width: 200px;
 		height: 15px;
-		background: #ea6e11;
+		background: linear-gradient(to left, #fe8c00 , #f83600); 
+	}
+	#user img, #user p{
+		display: inline;
+		
+	}
+	#user img{
+		border:2px solid rgba(254, 136, 0, 1);
+	}
+	#user p{
+		padding-top: 30px;
+		height: 100px;
+
 	}
 	p{
 		color:white;
 	}
 	.otherPlayerHp{
 		width: 200px;
-		height: 15px;
-		background: #ea6e11;
+		height: 8px;
+		margin-top: 5px;
+		background: linear-gradient(to left, #fe8c00 , #f83600); 
+		opacity: 0.6;
 	}
+	#otherUser{
+		margin-top:10px;
+		display: flex;
+		font-size: 12px;
+		line-height: 25px;
+	}
+	#otherUser img{
+		height: 25px;
+	}
+	#otherUser p{
+		margin-left: 30px;
+	}
+	#otherUser 
 	</style>
 	<script type="text/javascript" >
 		"use strict";
@@ -115,7 +150,7 @@
 				let div = document.createElement("div");
 				div.setAttribute("class", "player");
 
-				div.innerHTML = `<div>
+				div.innerHTML = `<div id="otherUser">
 							<img src=${data[prop].profilePic} alt="">
 							<p>${data[prop].profileName}</p>
 						</div>
@@ -134,18 +169,18 @@
 		<div id="blocker">
 	
 		    <div id="instructions">
-		    	<h1>choose your team</h1>
+		    	<h1>Choose your team</h1>
 		    	<div id="choose">
 		    		<div id="radiant"> The radiant </div>
 		    		<div id="dire"> The dire </div>
 		    	</div>
-		        <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
+		        <p>(W,A,S,D = Move, SPACE = Fly, MOUSE = Look, CLICK = Shoot)</p>
 		    </div>
 
 		</div>
 		<header>
 			<nav>
-				<div>
+				<div id="user">
 					<img src="<%= profilePic %>" alt="">
 					<p><%= profileName %></p>
 					<h1 id="playerHp"></h1>

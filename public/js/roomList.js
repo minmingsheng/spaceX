@@ -7,7 +7,7 @@ var Room = React.createClass({
   render: function() {
     return (
       <div>
-        <Logout/>
+        
         <div className = "parent-of-rl-ul">
           <RoomList />
           <UserList/>
@@ -16,15 +16,7 @@ var Room = React.createClass({
     );
   }
 });
-        var Logout = React.createClass({
-          render: function() {
-            return (
-              <div>
-                <a href="/"><button>logout</button></a>
-              </div>
-            );
-          }
-        });
+
 // ****************************************************************************
 // *                                   room List                                *
 // ****************************************************************************
@@ -33,7 +25,7 @@ var RoomList = React.createClass({
   render: function() {
     return (
       <div className="roomList">
-        roomList
+        <p>Room List</p>
         <Rooms />
         <Dialogs />
       </div>
@@ -68,24 +60,7 @@ var RoomList = React.createClass({
                   <div className="room addroom" onClick={this.createRoom}>
                       +
                   </div>
-                 {/* <a className="room"><div >
-                                                                           Room name
-                                                                      </div></a>
-                                                    <a className="room"><div >
-                                                                            Jasn
-                                                                      </div></a>
-                                                    <a className="room"><div >
-                                                                           panns
-                                                                      </div></a>
-                                                   <a className="room"> <div >
-                                                                           paney
-                                                                     </div></a>
-                                                    <a className="room"><div >
-                                                                           fuck
-                                                                      </div></a>
-                                                    <a  className="room"><div>
-                                                                          shit
-                                                                      </div></a>*/}
+
               </div>
             );
           }
@@ -150,7 +125,7 @@ var UserList = React.createClass({
   render: function() {
     return (
       <div className="userList">
-        userList
+        <p>User List</p>
         <Users/>
       </div>
     );
