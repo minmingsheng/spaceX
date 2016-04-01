@@ -552,9 +552,9 @@ body{
 					align-items: center;
 					font-weight: 300;
 					letter-spacing: 1px;
-					color:rgba(17, 20, 55, 1);
+					color:rgba(24, 37, 46, 1);
 					border-left: 3px solid rgba(2, 191, 183, 1);
-					background: rgba(232, 55, 85, 1);
+					background:rgba(97, 128, 143, 1);
 					transition: all 300ms ease;
 					cursor: pointer;
 					&:hover{
@@ -730,8 +730,9 @@ a*/
 						display: flex;
 						justify-content: space-between;
 						margin: 1em;
-						background: rgba(225,225,225,0.4);
+						/*background: rgba(225,225,225,0.4);*/
 						padding-bottom: 0;
+						animation: dia 300ms 1 cubic-bezier(.17,.67,.84,1.61);
 						div:first-child{
 							width: 2em;
 							margin-right: 0.5em;
@@ -740,10 +741,11 @@ a*/
 								width: 2em;
 								height: 100%;
 								margin:0;
+								border-radius: 1em;
 							}
 						};
 						div:nth-child(2){
-							width: 70%;
+							width: 85%;
 							color:black;
 							text-align: left;
 							
