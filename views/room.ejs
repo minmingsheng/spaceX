@@ -42,7 +42,7 @@
 			function go (){
 				window.location.href = '<%= host %>'+"/room/"+roomId+"/play";
 			}
-			setTimeout(go, 1000);
+			// setTimeout(go, 1000);
 	})
 		
 
@@ -57,7 +57,7 @@
 		<header>
 			<nav>
 				<div>
-					<h1><a href="/roomList">Room</a> | <%= roomName%> </h1>
+					<h1><a href="/roomList">ROOM</a> &deg <span><%= roomName%></span> </h1>
 					<a href="/room/<%= roomId%>/play">play</a>
 				</div>
 			</nav>

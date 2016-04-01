@@ -96,7 +96,7 @@ body{
 			font-weight: bold;
 			color:rgba(225,225,225,0);
 			font-family: times;
-			font-size: 4em;
+			font-size: 3.3em;
 			/*background-clip: text;*/
 			-webkit-background-clip: text;
 			animation: flip 3s 100ms 1 ease backwards;
@@ -236,7 +236,7 @@ body{
 		nav{
 			display: flex;
 			justify-content: space-between;
-
+			background: #02bfb7;
 			p{
 				width: 10px;
 			}
@@ -285,43 +285,43 @@ body{
 	}
 	@keyframes bounce{
 		from, 60%, 75%, 90%, to {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-  }
+		    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+		    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+		  }
 
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -3000px, 0);
-    transform: translate3d(0, -3000px, 0);
-  }
+		  0% {
+		    opacity: 0;
+		    -webkit-transform: translate3d(0, -3000px, 0);
+		    transform: translate3d(0, -3000px, 0);
+		  }
 
-  60% {
-    -webkit-transform: translate3d(0, 25px, 0);
-    transform: translate3d(0, 25px, 0);
-  }
+		  60% {
+		    -webkit-transform: translate3d(0, 25px, 0);
+		    transform: translate3d(0, 25px, 0);
+		  }
 
-  75% {
-    -webkit-transform: translate3d(0, -10px, 0);
-    transform: translate3d(0, -10px, 0);
-    opacity: 1;
+		  75% {
+		    -webkit-transform: translate3d(0, -10px, 0);
+		    transform: translate3d(0, -10px, 0);
+		    opacity: 1;
 
-  }
+		  }
 
-  90% {
-    -webkit-transform: translate3d(0, 5px, 0);
-    transform: translate3d(0, 5px, 0);
-  }
+		  90% {
+		    -webkit-transform: translate3d(0, 5px, 0);
+		    transform: translate3d(0, 5px, 0);
+		  }
 
-  to {
-    -webkit-transform: none;
-    transform: none;
-  }
+		  to {
+		    -webkit-transform: none;
+		    transform: none;
+		  }
 	}
 	.parent-of-rl-ul{
 		display: flex;
 	}
 	.userList{
-		margin-left: 3em;
+		margin-left: 1em;
 		width: 300px;
 		background: linear-gradient(to left, #041235, #ec3856);
 		padding-top: 0.5em;
@@ -412,9 +412,10 @@ body{
 		}
 		.rooms{
 			width: 100%;
-			height: 50%;
+			height: 48%;
 			overflow: scroll;
-			background: rgba(225, 225, 225, 1);
+			background: rgba(150, 253, 247, 0.6);
+			/*background: url(../img/roomList.png);*/
 			color:black;
 			cursor: pointer;
 
@@ -431,8 +432,17 @@ body{
 					width:80%;
 					height: 40px;
 					padding-left: 1em;
-					outline-color: rgba(206, 220, 210, 1);
-
+					font-weight: 100;
+					font-size: 0.8em;
+					color:black;
+					outline: none;
+					border:none;
+					background: rgba(206, 220, 210, 0.4);
+					&::placeholder{
+						font-size: 1em;
+						font-weight: 300;
+						color: rgba(53, 26, 60, 1);
+					}
 				}
 				button{
 					width:20%;
@@ -443,12 +453,39 @@ body{
 				line-height: 50px;
 				width: 20%;
 				height: 20%;
-				background: rgba(68, 83, 102, 1);
+				background: rgba(68, 83, 102, 0.1);
+				/*border-right: 1px solid rgba(7, 19, 54, 1);*/
 				float: left;
+				flex-wrap: wrap;
 				animation: showup 700ms 1 ease;
+				transition: all 200ms ease;
+				p{
+					letter-spacing: 1px;
+					font-weight: 400;
+					position: relative;
+					text-align: left;
+					padding-left: 40%;
+					&::before{
+						position:absolute;
+						content: "";
+						background: url(http://image005.flaticon.com/1/svg/96/96073.svg);
+						background-size: cover;
+						width: 20px;
+						height: 20px;
+						left:20%;
+						top:30%;
+					};
+				}
+				&:hover{
+					background:rgba(255, 255, 255, 0.8);
+				};
 			}
 			.room:nth-child(2n){
-				background: rgba(134, 199, 151, 0.4)
+				background: rgba(134, 199, 151, 0.1);
+				&:hover{
+					background:rgba(255, 255, 255, 0.8);
+
+				};
 			}
 		}
 
@@ -456,17 +493,34 @@ body{
 			width: 100%;
 			height: 50%;
 			overflow: scroll;
-			background: rgba(0, 0, 0, 1);
+			background: linear-gradient(to left, #16222A , #3A6073);
 			position: relative; 
 			display: flex;
 			flex-direction: column;
+			padding-top: 0.5em;
 			color: white;
+			>p{
+				padding-bottom: 0.5em;
+				font-weight: 300;
+				text-align: left;
+				padding-left: 1em;
+				position: relative;
+				&::after{
+					position:absolute;
+					content:"";
+					width: 400px;
+					height: 10px;
+					/*background: #fff;*/
+					border-bottom:1px dashed #fff;
+					bottom:0;
+					left: 0;
+				};
+			}
 			.dialogInput{
 				position: absolute;
 				bottom: 1em;
 				height: 40px;
 				width: 100%;
-				background: red;
 				text-align: left;
 				box-sizing: content-box;
 				display: flex;
@@ -476,9 +530,14 @@ body{
 					padding-left: 2em;
 					border:none;
 					flex: 9;
-					/*outline: none;*/
+					outline: none;
+					font-size: 0.8em;
+					font-weight: 100;
 					color: rgba(255, 255, 255, 1);
-					background: rgba(68, 83, 102, 1);
+					background: rgba(255, 255, 255, 0.2);
+					&::placeholder{
+						color:#fff;
+					};
 				}
 				div{
 					width: 17%;
@@ -491,37 +550,55 @@ body{
 					line-height: 35px;
 					flex-direction: column;
 					align-items: center;
-					background: rgba(67, 138, 200, 1);
+					font-weight: 300;
+					letter-spacing: 1px;
+					color:rgba(17, 20, 55, 1);
+					border-left: 3px solid rgba(2, 191, 183, 1);
+					background: rgba(232, 55, 85, 1);
+					transition: all 300ms ease;
+					cursor: pointer;
+					&:hover{
+						color:#fff;
+					};
 				}
 			}
 			.dialogfeed{
 				width: 100%;
-				height: 80%;
-				background: rgba(205, 254, 254, 0.7);
+				height: 78%;
+				/*background: rgba(205, 254, 254, 0.7);*/
 				overflow: scroll;
 				.dalog{
 					display: flex;
 					justify-content: space-between;
 					margin: 1em;
-					
+					animation: dia 300ms 1 cubic-bezier(.73,.48,.75,1);
 					div:first-child{
 						width: 2em;
 						margin-right: 0.5em;
+
 						img{
 							width: 2em;
 							height: 100%;
+							border-radius: 1em;
+							&::after{
+								content:":";
+								margin-left: 1em;
+							};
+							
 						}
+				
 					};
 					div:nth-child(2){
-						width: 70%;
-						color:black;
+						width: 80%;
+						color:#fff;
 						text-align: left;
-						
+						font-weight: 100;
 					};
 					div:nth-child(3){
-						color:black;
+						color:#fff;
 						text-align: right;
 						padding-right: 1em;
+						font-weight: 100;
 					};
 					div{
 						width: 100px;
@@ -530,11 +607,19 @@ body{
 						
 					}
 				}
+				@keyframes dia{
+					from{
+						transform: translate(0,10px);
+						opacity: 0;
+					}
+				}
 				.dalog:nth-child(n){
-					background: rgba(225,225,225,0.5);
+					/*background: rgba(225,225,225,0.5);*/
+					border-bottom: 1px solid rgba(225,225,225,0.3);
 				}
 				.dalog:nth-child(2n){
-					background: rgba(225,225,225,0.2);
+					/*background: rgba(225,225,225,0.2);*/
+					border-bottom: 1px solid rgba(225,225,225,0.3);
 				}
 			}
 		}
@@ -557,7 +642,31 @@ a*/
 #room{
 	height: 100%;
 	height: 100%;
+	padding-top: 1em;
+	background: linear-gradient(to left, #041235, #ec3856);
+	header{
+		a{
+			font-weight: 900;
+			padding-left: 1em;
+			color: #fff;
 
+		}
+		h1{
+			color: rgba(232, 55, 85, 1);
+			font-weight: 100;
+			span{
+				color: rgba(3, 26, 68, 1);
+				font-weight: 900;
+
+				letter-spacing: 1px;
+			}
+		}
+		div{
+			display: flex;
+			padding-bottom: 1em;
+		}
+		
+	}
 	#roomMain{
 		width: 100%;
 		height: 100%;
@@ -565,7 +674,6 @@ a*/
 			width: 100%;
 			height: 90vh;
 			display: flex;
-			/*background: green;*/
 			flex-direction: row;
 			justify-content: space-between;
 			.play-userList{
@@ -574,7 +682,14 @@ a*/
 				background: transparent;
 				text-align: center;
 				overflow: scroll;
-
+				>p{
+					padding-top: 1em;
+					padding-bottom: 0.5em;
+					text-align: left;
+					padding-left: 1em;
+					font-weight: 500;
+					color: rgba(255, 255, 255, 1);
+				}
 				.play-user{
 					.user{
 						margin-top: 0.5em;
@@ -603,8 +718,6 @@ a*/
 				}
 			}
 			.play-chat{
-				
-
 				border-top-right-radius: 10px;
 				width: 78%;
 				display: flex;
@@ -659,12 +772,13 @@ a*/
 					div{
 						text-align: center;
 						align-self: center;
-						color:  rgba(225,225,225,0.5);
+						color:  rgba(225,225,225,1);
 						background: rgba(225, 225, 225, 0.1);
 						border-left: 1px solid rgba(225,225,225,0.5);
 						transition: all 500ms ease;
 						line-height: 50px;
 						cursor: pointer;
+						font-weight: 100;
 						&:hover{
 							background: rgba(225,225,225,0.5);
 						};
@@ -676,13 +790,19 @@ a*/
 						border:none;
 						flex: 9;
 						color: rgba(255, 255, 255, 1);
-						outline-color: rgba(2, 13, 43, 1);
+						outline: none;
 						background: rgba(225, 225, 225, 0.1);
+						&::placeholder{
+							font-size:1.2em;
+							padding-bottom: 1em;
+							height: 2em;
+							color: #fff;
+						};
 					}
 					.send{
 						width: 10%;
 						height: 100%;
-	
+						
 					}
 					.pic{
 						width: 10%;
@@ -690,10 +810,15 @@ a*/
 					}
 				}	
 			}
-			.play-userList,.play-chat{
+			.play-chat{
 				height: 100%;
-				box-shadow: 1px 1px 11px rgba(0,0,0,1);
+				box-shadow: 1px 1px 11px rgba(10, 19, 53, 1);
 				
+			}
+			.play-userList{
+				height: 100%;
+				box-shadow: 1px 1px 11px rgba(220, 53, 84, 1);
+
 			}
 		}
 	}

@@ -60,15 +60,17 @@
     <body>
         <script src="js/3js/Three.js"></script>
         <script src="js/3js/cannon.js"></script>
-        <script src="js/3js/PointerLockControls.js"></script>
+        <script src="js/3js/PointerLockControls404.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <script src="js/3js/STLLoader.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <div id="blocker">
 
             <div id="instructions">
-                <span style="font-size:40px">404 You got lost..</span>
+                <span style="font-size:68px">404. You got lost..</span>
                 <br />
-                If you wanna stay:
+                If you wanna stay: try to escape from this maze
+                <br />
                 (W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)
             </div>
 
@@ -83,6 +85,8 @@
         </script>
         <script>
 
+            var fireTexture =new THREE.ImageUtils.loadTexture('img/fire.jpg');
+            var sunTexture =new THREE.ImageUtils.loadTexture('img/sun.jpg');
             var sphereShape, sphereBody, world, physicsMaterial, walls=[], balls=[], ballMeshes=[], boxes=[], boxMeshes=[];
             var sphereShape2; /*temp*/
             var sphereBody2Arr=[]; /*temp*/
@@ -90,7 +94,7 @@
             var camera, scene, renderer;
             var geometry, material, mesh;
             var controls,time = Date.now();
-
+            var fofMesh;
             var blocker = document.getElementById( 'blocker' );
             var instructions = document.getElementById( 'instructions' );
 
@@ -234,16 +238,17 @@
                 camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
                 scene = new THREE.Scene();
-                scene.fog = new THREE.Fog(0xf3e9db, 0, 600 );
+                scene.fog = new THREE.Fog(0x252649, 0, 110 );
 
                 var ambient = new THREE.AmbientLight( 0x021238 );
                 scene.add( ambient );
 
                 light = new THREE.SpotLight( 0xefefe7 );
-                light.position.set( 10, 30, 20 );
-                light.target.position.set( 0, 0, 0 );
+                light.position.set( 10, 60, 20 );
+                light.target.position.set( -25, 0, 0 );
                 if(true){
                     light.castShadow = true;
+                    light.intensity = 1.4;
 
                     light.shadowCameraNear = 20;
                     light.shadowCameraFar = 50;//camera.far;
@@ -259,24 +264,276 @@
                 scene.add( light );
 
 
+// ****************************************************************************
+// *                                    404                                   *
+// ****************************************************************************
+                
+                // 404 3D model
+                var textLoader = new THREE.STLLoader();
+                textLoader.load( 'img/text.stl', function(textGeometry){
+                    var material = new THREE.MeshLambertMaterial( {color: 0xea3755, specular: 0x111111, shininess: 200 } );
+                    fofMesh = new THREE.Mesh( textGeometry, material );
+                    fofMesh.position.set( 170, 20,150);
+                    fofMesh.rotation.set(  - Math.PI / 2,0, 0);
+                    fofMesh.scale.set( 2, 2, 2);
+                    fofMesh.castShadow = true;
+                    fofMesh.id = 'fof';
+                    fofMesh.receiveShadow = true;
+                    scene.add( fofMesh );
+                })
+                console.log(scene.children);
+
+                var sphere = new THREE.SphereGeometry( 10, 3, 2 );
+                light4 = new THREE.PointLight( 0xffaa00, 2, 38 );
+                var mmm = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { map: fireTexture, transparent: true, opacity:0} ) )
+                light4.applyMatrix(new THREE.Matrix4().makeTranslation(0,30,0));
+                light4.add( mmm );
+                scene.add( light4 );
+                light4.position.x = -40;
+                light4.position.y = 40;
+                light4.position.z = 0;
+
+                
+                light5 = new THREE.PointLight( 0xea3755, 2, 36 );
+                var mmm = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xea3755, transparent: true, opacity:0} ) )
+                light5.applyMatrix(new THREE.Matrix4().makeTranslation(0,30,0));
+                light5.add( mmm );
+                scene.add( light5 );
+                light5.position.x = -60;
+                light5.position.y = 40;
+                light5.position.z = 0;      
+                light6 = new THREE.PointLight( 0x304c92, 2, 22 );
+                var mmm = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xea3755, transparent: true, opacity:0} ) )
+                light6.applyMatrix(new THREE.Matrix4().makeTranslation(0,30,0));
+                light6.add( mmm );
+                scene.add( light6 );
+                light6.position.x = -60;
+                light6.position.y = 40;
+                light6.position.z = 0;                
+                
+// ****************************************************************************
+// *                                 add maze                                 *
+// ****************************************************************************
+                var x = 1;
+                var y = 10;
+                var z = 0;
+
+                function Obj3d (obj, shape, geometry) {
+                    this.shape = shape;
+                    this.geometry = geometry;
+                    this.body = new CANNON.Body({
+                        position:obj.position || {x:0, y:0, z:0},
+                        mass:obj.mass || 0,
+                        shape:this.shape
+                    });
+                    this.mesh = new THREE.Mesh(this.geometry, obj.material || new THREE.MeshPhongMaterial({side:THREE.DoubleSide}));
+                    this.mesh.castShadow = true;
+                    this.mesh.receiveShadow = true;
+                    world.add(this.body);
+                    if (obj.parent) obj.parent.add(this.mesh);
+                    else scene.add(this.mesh);
+                    this.update = function () {
+                        this.mesh.position.copy(this.body.position);
+                        this.mesh.quaternion.copy(this.body.quaternion);
+                    }
+                    this.update();
+                    if (obj.mass) objAry.push(this);
+                    if (obj.name) this.mesh.name = obj.name;
+                }
+                function Box (obj) {
+                    this.shape = new CANNON.Box(new CANNON.Vec3(obj.size.x/2, obj.size.y/2, obj.size.z/2));
+                    this.geometry = new THREE.BoxGeometry(obj.size.x, obj.size.y, obj.size.z);
+                    Obj3d.call(this, obj, this.shape, this.geometry);
+                }
+                function createBoxes (argument) {
+                    var wall1 = new Box({
+                        size:{x:x,y:y,z:z+100},
+                        position:{x:0,y:0,z:0},
+                    });
+                    var wall2 = new Box({
+                        size:{x:x+96,y:y,z:z+1},
+                        position:{x:-52,y:0,z:50}
+                    });
+                    var wall3 = new Box({
+                        size:{x:x+100,y:y,z:z+1},
+                        position:{x:-50,y:0,z:-50}
+                    });
+                    var wall4 = new Box({
+                        size:{x:x,y:y,z:z+96},
+                        position:{x:-100,y:0,z:2}
+                    });
+
+                    var wall21 = new Box({
+                        size:{x:x,y:y,z:z+16},
+                        position:{x:-4,y:0,z:42}
+                    });
+                    var wall41 = new Box({
+                        size:{x:x+35,y:y,z:z+1},
+                        position:{x:-82,y:0,z:40}
+                    });
+                    var wall42 = new Box({
+                        size:{x:x+45,y:y,z:z+1},
+                        position:{x:-77,y:0,z:-20}
+                    });
+                    var wall421 = new Box({
+                        size:{x:x,y:y,z:z+30},
+                        position:{x:-90,y:0,z:-5}
+                    });
+                    var wall422 = new Box({
+                        size:{x:x,y:y,z:z+40},
+                        position:{x:-64.5,y:0,z:0}
+                    });
+                    var wall423 = new Box({
+                        size:{x:x+15,y:y,z:z+15},
+                        position:{x:-52,y:0,z:-27}
+                    });
+                    var wall424 = new Box({
+                        size:{x:x+30,y:y,z:z+1},
+                        position:{x:-49.5,y:0,z:20}
+                    });
+                    var wall31 = new Box({
+                        size:{x:x,y:y,z:z+20},
+                        position:{x:-90,y:0,z:-40}
+                    });
+                    var wall311 = new Box({
+                        size:{x:x+25,y:y,z:z+1},
+                        position:{x:-77,y:0,z:-30.5}
+                    });
+                    var wall312 = new Box({
+                        size:{x:x,y:y,z:z+10},
+                        position:{x:-64.5,y:0,z:-35}
+                    });
+                    var wall313 = new Box({
+                        size:{x:x+25,y:y,z:z+1},
+                        position:{x:-52,y:0,z:-40.5}
+                    });
+                    var wall314 = new Box({
+                        size:{x:x,y:y,z:z+20},
+                        position:{x:-39,y:0,z:-31}
+                    });
+                    var wall315 = new Box({
+                        size:{x:x+34,y:y,z:z+1},
+                        position:{x:-22,y:0,z:-21}
+                    });
+                    var wall32 = new Box({
+                        size:{x:x,y:y,z:z+15},
+                        position:{x:-77,y:0,z:-42}
+                    });
+                    var wall33 = new Box({
+                        size:{x:x,y:y,z:z+25},
+                        position:{x:-30,y:0,z:-38}
+                    });
+                    var wall10 = new Box({
+                        size:{x:x+14,y:y,z:z+1},
+                        position:{x:-8,y:0,z:10}
+                    });
+                    var wall11 = new Box({
+                        size:{x:x+14,y:y,z:z+10},
+                        position:{x:-8,y:0,z:-5}
+                    });
+                    var wall12 = new Box({
+                        size:{x:x+20,y:y,z:z+1},
+                        position:{x:-10,y:0,z:-25}
+                    });
+                    var wall121 = new Box({
+                        size:{x:x,y:y,z:z+15},
+                        position:{x:-20,y:0,z:-33}
+                    });
+                    var wall122 = new Box({
+                        size:{x:x+15,y:y,z:z+1},
+                        position:{x:-12,y:0,z:-40}
+                    });
+                    var wall316 = new Box({
+                        size:{x:x,y:y,z:z+40},
+                        position:{x:-20,y:0,z:-1}
+                    });
+                    var wall317 = new Box({
+                        size:{x:x+23,y:y,z:z+2},
+                        position:{x:-16,y:0,z:20}
+                    });
+                    var wall318 = new Box({
+                        size:{x:x,y:y,z:z+10},
+                        position:{x:-4,y:0,z:24}
+                    });
+                    var wall319 = new Box({
+                        size:{x:x,y:y,z:z+10},
+                        position:{x:-28,y:0,z:24}
+                    });
+                    var wall320 = new Box({
+                        size:{x:x+45,y:y,z:z+1},
+                        position:{x:-50.5,y:0,z:25}
+                    });
+                    var wall321 = new Box({
+                        size:{x:x,y:y,z:z+40},
+                        position:{x:-74,y:0,z:5.5}
+                    });
+                    var wall323 = new Box({
+                        size:{x:x+15,y:y,z:z+1},
+                        position:{x:-82,y:0,z:16}
+                    });
+                    var wall324 = new Box({
+                        size:{x:x,y:y,z:z+18},
+                        position:{x:-90,y:0,z:24.5}
+                    });
+                    var wall325 = new Box({
+                        size:{x:x,y:y,z:z+20},
+                        position:{x:-50,y:0,z:35}
+                    });
+                    var wall326 = new Box({
+                        size:{x:x+15,y:y,z:z+2},
+                        position:{x:-12,y:0,z:28}
+                    });
+                    var wall327 = new Box({
+                        size:{x:x,y:y,z:z+10},
+                        position:{x:-19.5,y:0,z:32.5}
+                    });
+                    var wall328 = new Box({
+                        size:{x:x+30,y:y,z:z+1},
+                        position:{x:-30,y:0,z:38}
+                    });
+                }
+                createBoxes();
+// ****************************************************************************
+// *                                 add maze                                 *
+// ****************************************************************************
+
+
 
                 controls = new PointerLockControls( camera , sphereBody, {
-                    x : 20,
-                    y : 10,
-                    z : 0
-                },"red");
+                    x : -26,
+                    y : 40,
+                    z : -10
+                },"red",404,404,404);
                 scene.add( controls.getObject() );
 
 
                 socket.emit("join");
 
                 var player= [1];
-               
+                console.info(controls);
+                // floor
+                geometry = new THREE.PlaneGeometry( 98, 98, 50, 50 );
+                geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
-                    
-                
+                material = new THREE.MeshLambertMaterial( { map: sunTexture } );
 
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.position.set(-49,0,0)
+                scene.add( mesh );
 
+                renderer = new THREE.WebGLRenderer();
+                renderer.shadowMapEnabled = true;
+                renderer.shadowMapSoft = true;
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor( scene.fog.color, 1 );
+
+                document.body.appendChild( renderer.domElement );
+
+                window.addEventListener( 'resize', onWindowResize, false );
+
+                // Add boxes
                 // var halfExtents = new CANNON.Vec3(1,1,1);
                 // var boxShape = new CANNON.Box(halfExtents);
                 // var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
@@ -295,97 +552,8 @@
                 //     boxMesh.receiveShadow = true;
                 //     boxes.push(boxBody);
                 //     boxMeshes.push(boxMesh);
-
-
-
-
-
-                /*try*/
-                // camera1 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-                // controls = new PointerLockControls( camera1 , sphereBody );
-                // scene.add( controls.getObject() );
-
-
-
-
-                console.info(controls);
-                // floor
-                geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
-                geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-
-                material = new THREE.MeshLambertMaterial( { color: 0x96f7f6 } );
-
-                mesh = new THREE.Mesh( geometry, material );
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
-                scene.add( mesh );
-
-                renderer = new THREE.WebGLRenderer();
-                renderer.shadowMapEnabled = true;
-                renderer.shadowMapSoft = true;
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.setClearColor( scene.fog.color, 1 );
-
-                document.body.appendChild( renderer.domElement );
-
-                window.addEventListener( 'resize', onWindowResize, false );
-
-                // Add boxes
-                var halfExtents = new CANNON.Vec3(1,1,1);
-                var boxShape = new CANNON.Box(halfExtents);
-                var boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
-                for(var i=0; i<3; i++){
-                    var x = (Math.random()-0.5)*20;
-                    var y = 10+ (Math.random()-0.5)*1;
-                    var z = (Math.random()-0.5)*20;
-                    var boxBody = new CANNON.Body({ mass: 5 });
-                    boxBody.addShape(boxShape);
-                    var boxMesh = new THREE.Mesh( boxGeometry, material );
-                    world.addBody(boxBody);
-                    scene.add(boxMesh);
-                    boxBody.position.set(x,y,z);
-                    boxMesh.position.set(x,y,z);
-                    boxMesh.castShadow = true;
-                    boxMesh.receiveShadow = true;
-                    boxes.push(boxBody);
-                    boxMeshes.push(boxMesh);
-                }
-
-
-
-                // Add linked boxes
-                // var size = 0.5;
-                // var he = new CANNON.Vec3(size,size,size*0.1);
-                // var boxShape = new CANNON.Box(he);
-                // var mass = 0;
-                // var space = 0.1 * size;
-                // var N = 5, last;
-                // var boxGeometry = new THREE.BoxGeometry(he.x*2,he.y*2,he.z*2);
-                // for(var i=0; i<N; i++){
-                //     var boxbody = new CANNON.Body({ mass: mass });
-                //     boxbody.addShape(boxShape);
-                //     var boxMesh = new THREE.Mesh(boxGeometry, material);
-                //     boxbody.position.set(5,(N-i)*(size*2+2*space) + size*2+space,0);
-                //     boxbody.linearDamping = 0.01;
-                //     boxbody.angularDamping = 0.01;
-                //     // boxMesh.castShadow = true;
-                //     boxMesh.receiveShadow = true;
-                //     world.addBody(boxbody);
-                //     scene.add(boxMesh);
-                //     boxes.push(boxbody);
-                //     boxMeshes.push(boxMesh);
-
-                //     if(i!=0){
-                //         // Connect this body to the last one
-                //         var c1 = new CANNON.PointToPointConstraint(boxbody,new CANNON.Vec3(-size,size+space,0),last,new CANNON.Vec3(-size,-size-space,0));
-                //         var c2 = new CANNON.PointToPointConstraint(boxbody,new CANNON.Vec3(size,size+space,0),last,new CANNON.Vec3(size,-size-space,0));
-                //         world.addConstraint(c1);
-                //         world.addConstraint(c2);
-                //     } else {
-                //         mass=0.3;
-                //     }
-                //     last = boxbody;
                 // }
+
             }
 
             function onWindowResize() {
@@ -394,45 +562,47 @@
                 renderer.setSize( window.innerWidth, window.innerHeight );
             }
 
+
+
             var dt = 1/60;
+            // console.log("fofMesh", fofMesh);
             function animate() {
-                socket.on("playerList", function(data){
-                    console.log("playerList: ", data);
-                    for (var i = 0; i < data.roomPlayerLists.length; i++) {
-                        var playerColor = ["pink", "salmon", "skyblue", "indogo", "red"]
-                        var x = (Math.random()-0.5)*50;
-                        var y = 10+ (Math.random()-0.5)*1;
-                        var z = (Math.random()-0.5)*50;
-                        sphereShape2 = new CANNON.Sphere(1.3);
-                        sphereBody2 = new CANNON.Body({ mass: 5 });
-                        sphereBody2.addShape(sphereShape2);
-                        sphereBody2.position.set(0,5,0);
-                        sphereBody2.linearDamping = 0.9;
-                        world.addBody(sphereBody2);
-                        var geometry = new THREE.SphereGeometry(1, 3, 3 );
-                        var material = new THREE.MeshLambertMaterial( { 
-                            color: playerColor[i%playerColor.length],
-                            // transparent: true,
-                            // opacity: 0.4
-                             } );
-                        var jasonObject = new THREE.Mesh( geometry, material );
-                        sphereBody2.position.set(x,y,z);
-                        jasonObject.position.set(x,y,z);
-                        jason.push(jasonObject);
-                        sphereBody2Arr.push(sphereBody2);
-                        console.log("jasonObject.position:from 284 ",jasonObject.position);
-                        scene.add(jasonObject);
-                        sphereBody2.addEventListener("collide",function(e){
-                            console.log("attacked");
-                        });
-                    };
-                });
+                // light4.rotation.x += 0.003;
+                light4.rotation.z += 0.003;
+                // light4.rotation.z += 0.300;
+                // socket.on("playerList", function(data){
+                //     console.log("playerList: ", data);
+                //     for (var i = 0; i < data.roomPlayerLists.length; i++) {
+                //         var playerColor = ["pink", "salmon", "skyblue", "indogo", "red"]
+                //         var x = (Math.random()-0.5)*50;
+                //         var y = 10+ (Math.random()-0.5)*1;
+                //         var z = (Math.random()-0.5)*50;
+                //         sphereShape2 = new CANNON.Sphere(1.3);
+                //         sphereBody2 = new CANNON.Body({ mass: 5 });
+                //         sphereBody2.addShape(sphereShape2);
+                //         sphereBody2.position.set(0,5,0);
+                //         sphereBody2.linearDamping = 0.9;
+                //         world.addBody(sphereBody2);
+                //         var geometry = new THREE.SphereGeometry(1, 3, 3 );
+                //         var material = new THREE.MeshLambertMaterial( { 
+                //             color: playerColor[i%playerColor.length],
+                //             // transparent: true,
+                //             // opacity: 0.4
+                //              } );
+                //         var jasonObject = new THREE.Mesh( geometry, material );
+                //         sphereBody2.position.set(x,y,z);
+                //         jasonObject.position.set(x,y,z);
+                //         jason.push(jasonObject);
+                //         sphereBody2Arr.push(sphereBody2);
+                //         console.log("jasonObject.position:from 284 ",jasonObject.position);
+                //         scene.add(jasonObject);
+                //         sphereBody2.addEventListener("collide",function(e){
+                //             console.log("attacked");
+                //         });
+                //     };
+                // });
                 
                 requestAnimationFrame( animate );
-                // yawObject.position.copy(sphereBody2.position);
-                // console.log("sphereBody2.position: ",sphereBody2.position);
-                // console.log("yawObject.position: ", jason[0].position);
-                // jason[0].position.copy(sphereBody2.position)
                 for (var i = 0; i < jason.length; i++) {
                     jason[i].position.copy(sphereBody2Arr[i].position);
                     // console.log("");

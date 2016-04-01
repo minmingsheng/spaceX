@@ -54,7 +54,7 @@ var UserList = React.createClass({
   render: function() {
     return (
       <div className = "play-userList">
-        UserList
+        <p>UserList</p>
         <Users/>
       </div>
     )

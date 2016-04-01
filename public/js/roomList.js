@@ -51,7 +51,7 @@ var RoomList = React.createClass({
           /*!!!!!!!socket!!!!!!*/
           render: function() {
             var add = this.state.add? <div className="pop-up-creat">
-              <input type='text' placeholder='enter the room name' />
+              <input type='text' placeholder='Enter the room name...' />
               <button onClick = {this.finishCreateRoom} id="createRoombtn">create</button>
             </div> :  <h1></h1>
             return (
@@ -70,7 +70,7 @@ var RoomList = React.createClass({
           render: function() {
             return (
               <div className="dalogs">
-                Dialog
+                <p>Chat</p>
                 <DialogFeed/>
                 <DialogInput/>
               </div>
@@ -110,7 +110,7 @@ var RoomList = React.createClass({
                     return (
                       <div className="dialogInput">
                       
-                        <input type="text" id="listDialogInput" placeholder="type word here.." />
+                        <input type="text" id="listDialogInput" placeholder="Type word here.." />
                         <div>Send</div>
                       </div>
                     );
