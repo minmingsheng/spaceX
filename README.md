@@ -1,6 +1,6 @@
 # spaceX
 
 <h1> npm install </h1>
-<p> node start </p>
+<h1> node start </h1>
 
 view this <a href = 'http://sheng.design/intro-spacexyz/'>spaceX</a>
